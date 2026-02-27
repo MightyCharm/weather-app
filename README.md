@@ -1,17 +1,15 @@
-# project-name
+# weather-app
 
-Project: Project Name (The Odin Project: Course Name)
+Project: Weather App (The Odin Project: JavaScript Course)
 
 ## ℹ️ Description
 
-- Explain in short what program does.
+This program fetches data from visual crossing and displays current time, date and weather.
 
 ## ✅ Features
 
-- feature 1
-- feature 2
-- feature 3
-- feature 4
+- shows current time/date/weather
+- shows forecast
 
 ## ⚙️ Tech Stack
 
@@ -29,10 +27,8 @@ Project: Project Name (The Odin Project: Course Name)
 
 ## 🔧 Setup
 
-1. Clone the repo
-2. Run `npm install`
-3. Run `npm run dev`
-4. Open `http://localhost:8080`
+1. Run `npm run dev`
+2. Open `http://localhost:8080`
 
 ## 🚀 Deploy
 
