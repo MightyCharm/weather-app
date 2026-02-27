@@ -6,6 +6,96 @@
   box-sizing: border-box;
 }
 
+html,
 body {
+  height: 100%;
+}
+
+body {
+  display: grid;
+  grid-template-rows: 100px 1fr 100px;
+  justify-items: center;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  /* background-color: grey; */
+  /* border: 1px solid red; */
+}
+
+.page-header,
+.page-main,
+.page-footer {
+  /* border: 1px solid blue; */
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+}
+
+.page-header,
+.page-footer {
+  color: white;
   background-color: grey;
+}
+
+.page-header {
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-main-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-main {
+  /* border: 1px solid red; */
+}
+
+.page-footer {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer-header {
+}
+
+.footer-ul {
+  display: flex;
+  gap: 1em;
+  list-style-type: none;
+}
+
+.list-item {
+  /* border: 1px solid red; */
+}
+.social-link,
+.link-sololearn {
+  color: white;
+}
+
+.logo-sololearn {
+  height: 30px;
+  width: 30px;
+}
+
+.weather-icon {
+  width: 100px;
+  height: 100px;
+}
+
+@media (hover: hover) {
+  .social-link:hover {
+    color: deeppink;
+  }
+
+  .link-sololearn:hover {
+    filter: hue-rotate(300deg) saturate(3) brightness(1.1);
+  }
 }
