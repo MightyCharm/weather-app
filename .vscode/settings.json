@@ -1,4 +1,11 @@
 {
-  "conventionalCommits.scopes": ["debug", "linting", "readme", "ui", "readme"],
+  "conventionalCommits.scopes": [
+    "debug",
+    "linting",
+    "readme",
+    "ui",
+    "readme",
+    "data"
+  ],
   "cSpell.ignoreWords": ["sololearn"]
 }

@@ -12,7 +12,57 @@
         <p>Odin Project [2026]</p>
       </div>
     </header>
-    <main class="page-main"></main>
+    <main class="page-main">
+      <div class="container">
+        <section class="section-form">
+          <form class="form-element" action="" method="get">
+            <div class="div-search">
+              <label class="input-search-label" for="search"
+                >Enter Location</label
+              >
+              <input
+                id="search"
+                class="input-search"
+                type="text"
+                name="user-search"
+                required
+              />
+            </div>
+            <button class="submit-btn" type="submit">SEARCH</button>
+          </form>
+        </section>
+        <section class="section-current">
+          <!--  -->
+          <div class="div-current-location-info">
+            <h2>Stuttgart (Germany)</h2>
+          </div>
+          <div class="card-current">
+            <div class="div-current-date">
+              <span id="current-date" class="current-span-date"
+                >03.04.2026</span
+              >
+              <span id="current-time" class="current-span-time"
+                >12:30:21 pm</span
+              >
+              <span id="current-day" class="current-span-day">WED</span>
+            </div>
+
+            <div class="div-current-img">
+              <img
+                class="current-weather-icon"
+                src="./images/SVG/icons1/partly-cloudy-day.svg"
+              />
+            </div>
+
+            <div class="div-current-temperature">
+              <span class="current-max-temp">H 30.0 °C</span> |
+              <span class="current-min-temp">L 20.0 °C</span>
+            </div>
+          </div>
+          <!--  -->
+        </section>
+      </div>
+    </main>
     <footer class="page-footer" aria-label="Social media links">
       <h2 class="footer-header">About me</h2>
       <ul class="footer-ul">
