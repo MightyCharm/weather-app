@@ -15,51 +15,72 @@
     <main class="page-main">
       <div class="container">
         <section class="section-form">
-          <form class="form-element" action="" method="get">
-            <div class="div-search">
-              <label class="input-search-label" for="search"
-                >Enter Location</label
-              >
-              <input
-                id="search"
-                class="input-search"
-                type="text"
-                name="user-search"
-                required
-              />
-            </div>
+          <form class="form-element" method="get">
+            <label class="input-search-label" for="search"
+              >Enter Location</label
+            >
+            <input
+              id="search"
+              class="input-search"
+              type="text"
+              name="user-search"
+              required
+            />
+
             <button class="submit-btn" type="submit">SEARCH</button>
           </form>
         </section>
         <section class="section-current">
-          <!--  -->
           <div class="div-current-location-info">
-            <h2>Stuttgart (Germany)</h2>
+            <h2 id="data-address" class="address"></h2>
           </div>
           <div class="card-current">
             <div class="div-current-date">
-              <span id="current-date" class="current-span-date"
-                >03.04.2026</span
-              >
-              <span id="current-time" class="current-span-time"
+              <span id="data-date" class="current-span-date"></span>
+              <span id="data-datetime" class="current-span-time"
                 >12:30:21 pm</span
               >
-              <span id="current-day" class="current-span-day">WED</span>
+              <span id="data-weekday" class="current-span-day"></span>
             </div>
 
             <div class="div-current-img">
               <img
+                id="data-icon"
                 class="current-weather-icon"
-                src="./images/SVG/icons1/partly-cloudy-day.svg"
+                alt="a sun almost totally covered by two clouds"
               />
+              <p id="data-conditions" class="current-weather-conditions"></p>
             </div>
 
             <div class="div-current-temperature">
-              <span class="current-max-temp">H 30.0 °C</span> |
-              <span class="current-min-temp">L 20.0 °C</span>
+              <div class="temp-group">
+                <span class="temp-description">Temperature</span>
+                <span id="data-temp" class="current-temp"></span>
+              </div>
+              <div class="feel-temp-group">
+                <span class="feelslike-description">Feels like:</span>
+                <span id="data-feelslike" class="current-feel-temp"></span>
+              </div>
+            </div>
+
+            <div class="div-current-wind-humidity">
+              <div class="wind-group">
+                <span class="wind-description">Windspeed</span>
+                <span id="data-wind" class="current-wind"></span>
+              </div>
+
+              <div class="humidity-group">
+                <span class="humidity-description">Humidity</span>
+                <span id="data-humidity" class="current-humidity"
+                  >humidity</span
+                >
+              </div>
+            </div>
+
+            <div class="div-current-description">
+              <p id="data-description"></p>
             </div>
           </div>
-          <!--  -->
         </section>
       </div>
     </main>

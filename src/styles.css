@@ -6,6 +6,23 @@
   box-sizing: border-box;
 }
 
+:root {
+  --header-bg: grey;
+  --header-col: hsl(0, 0%, 100%);
+
+  --section-form-bg: hsl(0, 0%, 75%);
+  --section-form-col: hsl(0, 0%, 100%);
+
+  --section-current-bg: rgb(153, 151, 151);
+  --section-current-col: hsl(0, 0%, 100%);
+
+  --divs-current-bg: hsl(0, 1%, 39%);
+  --divs-current-col: hsl(0, 0%, 100%);
+
+  --footer-bg: grey;
+  --footer-col: hsl(0, 0%, 100%);
+}
+
 html,
 body {
   height: 100%;
@@ -29,18 +46,14 @@ body {
   /* border: 1px solid blue; */
 }
 
-.page-header,
-.page-footer {
-  color: white;
-  background-color: grey;
-}
-
 /* header ============================================ */
 .page-header {
   /* border: 1px solid red; */
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--header-col);
+  background-color: var(--header-bg);
 }
 
 .header-main-text {
@@ -70,48 +83,77 @@ body {
 }
 
 .section-form {
-  background-color: rgb(192, 192, 192);
+  color: var(--section-form-col);
+  background-color: var(--section-form-bg);
 }
 
 .form-element {
   display: flex;
-}
-
-.div-search {
-  display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  /* border: 1px solid black; */
 }
 
 .input-search-label {
+  font-size: 1rem;
   /* border: 1px solid red; */
 }
 
 .input-search {
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
   /* border: 1px solid red; */
 }
 
 .submit-btn {
-  padding: 0rem 0.5rem;
+  padding: 0.4rem 0.5rem;
+  font-size: 1rem;
   border: none;
   color: white;
   background-color: hsl(219, 83%, 41%);
   transition: background-color 0.3s ease;
 }
 
+/* main content */
 .section-current {
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-items: center;
   align-items: center;
-  gap: 0.5rem;
-  background-color: rgb(163, 162, 162);
+  gap: 1rem;
+  padding: 1rem;
+
+  color: var(--section-current-col);
+  background-color: var(--section-current-bg);
+  /* border: 5px solid red; */
+}
+
+.div-current-location-info {
+}
+
+.address {
 }
 
 .card-current {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 0.5fr;
   gap: 1rem;
   /* border: 2px solid red; */
+}
+
+.div-current-date,
+.div-current-img,
+.div-current-temperature,
+.div-current-wind-humidity,
+.div-current-description {
+  padding: 1rem;
+  border-radius: 4px;
+  color: var(--divs-current-col);
+  background-color: var(--divs-current-bg);
+  /* border: 1px solid red; */
 }
 
 .div-current-date {
@@ -120,29 +162,37 @@ body {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  color: blue;
-  border: 1px solid hsl(231, 100%, 50%);
+  /* color: blue; */
 }
 
 .current-span-date {
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 .current-span-time {
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 .current-span-day {
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 .div-current-img {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0rem 0.5rem 1rem 0.5rem;
   /* background-color: hsl(207, 96%, 55%); */
-  border: 1px solid hsl(231, 100%, 50%);
+}
+
+.current-weather-icon {
+  filter: invert(1);
+  width: 100px;
+  height: 100px;
+}
+
+.current-weather-conditions {
 }
 
 .div-current-temperature {
@@ -150,98 +200,75 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
-  color: blue;
-  border: 1px solid hsl(231, 100%, 50%);
-}
-
-.current-max-temp {
-  color: red;
-}
-
-.current-min-temp {
-  color: blue;
-}
-
-.section-forecast-day {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 0.5rem;
-  background-color: grey;
+  padding: 1rem;
 }
 
-.div-forecast-day-info {
-  font-size: 0.8rem;
-}
-
-.container-cards-forecast-day {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  flex-wrap: wrap;
-  gap: 1rem;
-  /* border: 4px solid red; */
-}
-
-.card-preview-day {
-  display: grid;
-  grid-template-rows: 2fr 1fr 1fr;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  width: 150px;
-  border: 1px solid blue;
-}
-
-.div-prev-day-img {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  border: 1px solid red;
-  /* border: 1px solid red; */
-}
-
-.prev-day-weather-img {
-  padding: 0.5rem;
-  width: 100%;
-  height: auto;
-  /* background-color: hsl(207, 96%, 55%); */
-  /* border: 1px sol#147fd6*/
-}
-
-.prev-day-week-time {
+.temp-group {
   display: flex;
   flex-direction: column;
-  font-size: 0.9rem;
-  padding: 0.5rem 0;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.feel-temp-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.current-temp {
+  /* color: red; */
+}
+
+.current-feel-temp {
+  /* color: blue; */
+}
+
+.div-current-wind-humidity {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
   /* border: 1px solid red; */
 }
 
-.prev-day-part {
+.wind-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  /* border: 1px solid blue; */
+}
+
+.humidity-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  /* border: 1px solid green; */
+}
+
+.current-wind {
   /* border: 1px solid red; */
 }
 
-.prev-day-time {
+.current-humidity {
   /* border: 1px solid red; */
 }
 
-.div-prev-day-max-min-temp {
-  border: 1px solid red;
-  /* font-size: 1.2rem; */
-}
-
-.prev-day-max-temp {
-  color: rgb(155, 7, 7);
-}
-
-.prev-day-min-temp {
-  color: blue;
-}
-
-.section-forecast-week {
+.div-current-description {
+  grid-column: 1 / 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 /* footer =========================================== */
@@ -252,6 +279,8 @@ body {
   justify-content: center;
   align-items: center;
   gap: 0.4rem;
+  color: var(--footer-col);
+  background-color: var(--footer-bg);
 }
 
 .footer-header {
@@ -279,11 +308,6 @@ body {
 .logo-sololearn {
   height: 30px;
   width: 30px;
-}
-
-.current-weather-icon {
-  width: 100px;
-  height: 100px;
 }
 
 @media (hover: hover) {

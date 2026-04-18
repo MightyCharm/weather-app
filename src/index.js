@@ -1,12 +1,30 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./styles.css";
 
+// `./images/SVG/icons2/${icon}.svg`
 // https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/london?key=11111111111111111
+
+/*
+const icon = data.currentConditions.icon;
+element.src = require(`./images/SVG/icons2/${icon}.svg`);   
+*/
+
+const uiAddress = document.querySelector("#data-address");
+const uiDate = document.querySelector("#data-date");
+const uiTime = document.querySelector("#data-datetime");
+const uiDay = document.querySelector("#data-weekday");
+const uiIcon = document.querySelector("#data-icon");
+const uiConditions = document.querySelector("#data-conditions");
+const uiTemp = document.querySelector("#data-temp");
+const uiFeelTemp = document.querySelector("#data-feelslike");
+const uiWind = document.querySelector("#data-wind");
+const uiHumidity = document.querySelector("#data-humidity");
+const uiDescription = document.querySelector("#data-description");
 
 async function fetchData() {
   try {
     const response = await fetch(
-      "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/pforzheim?key=XNT5W4M924BSW324WY2Q8UA4N",
+      "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/pforzheim?unitGroup=metric&key=XNT5W4M924BSW324WY2Q8UA4N",
     );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -22,9 +40,16 @@ async function fetchData() {
 
 async function extractData(data) {
   //const data = await getWeatherData();
+  console.log(data);
   const address = data.address;
-  const datetime = data.currentConditions.datetime;
-  const condition = data.currentConditions.conditions;
+
+  const fetchedDate = data.days[0].datetime;
+  const objDate = new Date(fetchedDate);
+  const date = objDate.toLocaleDateString("de-DE");
+  const weekday = objDate.toLocaleDateString("en-EN", { weekday: "long" });
+
+  const time = data.currentConditions.datetime;
+  const conditions = data.currentConditions.conditions;
   const temperature = data.currentConditions.temp;
   const feelslike = data.currentConditions.feelslike;
   const humidity = data.currentConditions.humidity;
@@ -37,8 +62,9 @@ async function extractData(data) {
   const icon = data.currentConditions.icon;
 
   console.log(`address: ${address}`);
-  console.log(`datetime: ${datetime}`);
-  console.log(`conditions: ${condition}`);
+  console.log(`date: ${date}`);
+  console.log(`datetime: ${time}`);
+  console.log(`conditions: ${conditions}`);
   console.log(`icon: ${icon}`);
   console.log(`temperature: ${temperature}`);
   console.log(`feelslike: ${feelslike}`);
@@ -50,6 +76,18 @@ async function extractData(data) {
   console.log(`uvindex: ${uvindex}`);
 
   console.log(`description: ${description}`);
+
+  uiAddress.textContent = address.charAt(0).toUpperCase() + address.slice(1);
+  uiDate.textContent = `${date}`;
+  uiTime.textContent = `${time} Uhr`;
+  uiDay.textContent = `${weekday}`;
+  uiIcon.src = require(`./images/SVG/icons2/${icon}.svg`);
+  uiConditions.textContent = conditions;
+  uiTemp.textContent = `${temperature} °C`;
+  uiFeelTemp.textContent = `${feelslike} °C`;
+  uiWind.textContent = `${windspeed} km/h`;
+  uiHumidity.textContent = `${humidity} %`;
+  uiDescription.textContent = description;
 }
 
 async function init() {
