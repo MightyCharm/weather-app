@@ -23,6 +23,8 @@ This program fetches data from visual crossing and displays current time, date a
 
 ## 🖥️ Live Demo
 
+https://mightycharm.github.io/weather-app/
+
 ## 📸 Screenshots
 
 ## 🔧 Setup
