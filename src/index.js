@@ -1,14 +1,6 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./styles.css";
 
-// `./images/SVG/icons2/${icon}.svg`
-// https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/london?key=11111111111111111
-
-/*
-const icon = data.currentConditions.icon;
-element.src = require(`./images/SVG/icons2/${icon}.svg`);   
-*/
-
 const uiAddress = document.querySelector("#data-address");
 const uiDate = document.querySelector("#data-date");
 const uiTime = document.querySelector("#data-datetime");
@@ -21,6 +13,43 @@ const uiWind = document.querySelector("#data-wind");
 const uiHumidity = document.querySelector("#data-humidity");
 const uiDescription = document.querySelector("#data-description");
 
+function getDataStorage() {
+  console.log("function getDataStorage()");
+  const checkData = JSON.parse(localStorage.getItem("data"));
+  return checkData ? checkData : false;
+}
+
+function setDataStorage(data) {
+  console.log("function setDataStorage()");
+  localStorage.setItem("data", JSON.stringify(data));
+}
+
+function processData(data) {
+  console.log("function processData()");
+  const dataDate = data.days[0].datetime;
+  const objDate = new Date(dataDate);
+  const date = objDate.toLocaleDateString("de-DE");
+  const weekday = objDate.toLocaleDateString("en-EN", { weekday: "long" });
+  let customObj = {
+    address: data.address,
+    date: date,
+    weekday: weekday,
+    time: data.currentConditions.datetime,
+    conditions: data.currentConditions.conditions,
+    temperature: data.currentConditions.temp,
+    feelslike: data.currentConditions.feelslike,
+    humidity: data.currentConditions.humidity,
+    windspeed: data.currentConditions.windspeed,
+    sunrise: data.currentConditions.sunrise,
+    sunset: data.currentConditions.sunset,
+    pressure: data.currentConditions.pressure,
+    uvindex: data.currentConditions.uvindex,
+    description: data.description,
+    icon: data.currentConditions.icon,
+  };
+  return customObj;
+}
+
 async function fetchData(input) {
   console.log("function fetchData() fetches and mdifies the data");
   const city = input;
@@ -32,9 +61,8 @@ async function fetchData(input) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     console.log(`Successful fetch: ${response.ok} ${response.status}`);
-
     const data = await response.json();
-    const modifiedData = { data: data, timestamp: Date.now() };
+    const modifiedData = { data: processData(data), timestamp: Date.now() };
     return modifiedData;
   } catch (error) {
     console.log(error);
@@ -42,48 +70,29 @@ async function fetchData(input) {
 }
 
 async function extractData(data) {
-  //const data = await getWeatherData();
-  console.log(data);
+  console.log("function extractData()");
+  //console.log(data);
   const address = data.address;
 
-  const fetchedDate = data.days[0].datetime;
-  const objDate = new Date(fetchedDate);
-  const date = objDate.toLocaleDateString("de-DE");
-  const weekday = objDate.toLocaleDateString("en-EN", { weekday: "long" });
+  const date = data.date;
+  const weekday = data.weekday;
 
-  const time = data.currentConditions.datetime;
-  const conditions = data.currentConditions.conditions;
-  const temperature = data.currentConditions.temp;
-  const feelslike = data.currentConditions.feelslike;
-  const humidity = data.currentConditions.humidity;
-  const windspeed = data.currentConditions.windspeed;
-  const sunrise = data.currentConditions.sunrise;
-  const sunset = data.currentConditions.sunset;
-  const pressure = data.currentConditions.pressure;
-  const uvindex = data.currentConditions.uvindex;
+  const fetchTime = data.time;
+  const conditions = data.conditions;
+  const temperature = data.temperature;
+  const feelslike = data.feelslike;
+  const humidity = data.humidity;
+  const windspeed = data.windspeed;
+  //const sunrise = data.sunrise;
+  //const sunset = data.sunset;
+  //const pressure = data.pressure;
+  //const uvindex = data.uvindex;
   const description = data.description;
-  const icon = data.currentConditions.icon;
+  const icon = data.icon;
 
-  /*
-  console.log(`address: ${address}`);
-  console.log(`date: ${date}`);
-  console.log(`datetime: ${time}`);
-  console.log(`conditions: ${conditions}`);
-  console.log(`icon: ${icon}`);
-  console.log(`temperature: ${temperature}`);
-  console.log(`feelslike: ${feelslike}`);
-  console.log(`humidity: ${humidity}`);
-  console.log(`windspeed: ${windspeed}`);
-  console.log(`sunrise: ${sunrise}`);
-  console.log(`sunset: ${sunset}`);
-  console.log(`pressure: ${pressure}`);
-  console.log(`uvindex: ${uvindex}`);
-
-  console.log(`description: ${description}`);
-  */
   uiAddress.textContent = address.charAt(0).toUpperCase() + address.slice(1);
   uiDate.textContent = `${date}`;
-  uiTime.textContent = `${time} Uhr`;
+  uiTime.textContent = `${fetchTime} Uhr`;
   uiDay.textContent = `${weekday}`;
   uiIcon.src = require(`./images/SVG/icons2/${icon}.svg`);
   uiConditions.textContent = conditions;
@@ -94,32 +103,16 @@ async function extractData(data) {
   uiDescription.textContent = description;
 }
 
-function getDataStorage() {
-  console.log("function getDataStorage()");
-  const checkData = JSON.parse(localStorage.getItem("data"));
-  return checkData ? checkData : false;
-}
-
-function setDataStorage(data) {
-  console.log("function setDataStoarage()");
-  localStorage.setItem("data", JSON.stringify(data));
-}
-
 async function updateWeatherUI(input) {
-  console.log("function updateWeatherUI_beta()");
+  console.log("function updateWeatherUI()");
   let data = getDataStorage(input);
   let isData = false;
   let isSameCity = false;
   let isDataStale = false;
-
-  console.log("data:", data);
   isData = data ? true : false;
-  console.log("isData", isData);
 
   if (isData) {
-    console.log("--> A)");
     const dataAddress = data.data.address;
-    console.log("dataAddress:", dataAddress);
 
     if (dataAddress === input) {
       isSameCity = true;
@@ -127,11 +120,11 @@ async function updateWeatherUI(input) {
 
     const currentTime = Date.now();
     const timestamp = data.timestamp;
-    console.log("timestamp:", timestamp, typeof timestamp);
+    //console.log("timestamp:", timestamp, typeof timestamp);
 
     const lastFetchMilliSeconds = currentTime - timestamp;
     const lastFetchMinutes = Math.ceil(lastFetchMilliSeconds / 1000 / 60);
-    console.log(lastFetchMinutes, lastFetchMilliSeconds);
+    console.log(`last fetch was ${lastFetchMinutes} min ago.`);
     if (lastFetchMinutes > 10) {
       isDataStale = true;
     }
@@ -141,12 +134,12 @@ async function updateWeatherUI(input) {
     `final check\nisData: ${isData}\nisSameCity: ${isSameCity}\nisOldData: ${isDataStale}`,
   );
   if (isData === false || isSameCity === false || isDataStale === true) {
-    console.log("new fetch request");
+    console.log("----->A) NEW fetch request");
     data = await fetchData(input);
     setDataStorage(data);
   }
   extractData(data.data);
 }
 
-const input = "pforzheim".toLowerCase();
+const input = "Pforzheim".toLowerCase();
 updateWeatherUI(input);
