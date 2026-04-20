@@ -1,17 +1,32 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./styles.css";
 
-const uiAddress = document.querySelector("#data-address");
-const uiDate = document.querySelector("#data-date");
-const uiTime = document.querySelector("#data-datetime");
-const uiDay = document.querySelector("#data-weekday");
-const uiIcon = document.querySelector("#data-icon");
-const uiConditions = document.querySelector("#data-conditions");
-const uiTemp = document.querySelector("#data-temp");
-const uiFeelTemp = document.querySelector("#data-feelslike");
-const uiWind = document.querySelector("#data-wind");
-const uiHumidity = document.querySelector("#data-humidity");
-const uiDescription = document.querySelector("#data-description");
+const uiAddress = document.getElementById("data-address");
+const uiDate = document.getElementById("data-date");
+const uiTime = document.getElementById("data-datetime");
+const uiDay = document.getElementById("data-weekday");
+const uiIcon = document.getElementById("data-icon");
+const uiConditions = document.getElementById("data-conditions");
+const uiTemp = document.getElementById("data-temp");
+const uiFeelTemp = document.getElementById("data-feelslike");
+const uiWind = document.getElementById("data-wind");
+const uiHumidity = document.getElementById("data-humidity");
+const uiDescription = document.getElementById("data-description");
+
+const inputForm = document.getElementById("search");
+const searchButton = document.getElementById("search-btn");
+
+searchButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  const input = getUserInput();
+  updateWeatherUI(input);
+});
+
+function getUserInput() {
+  const input = inputForm.value.toLowerCase();
+  inputForm.value = "";
+  return input;
+}
 
 function getDataStorage() {
   console.log("function getDataStorage()");
@@ -141,5 +156,5 @@ async function updateWeatherUI(input) {
   extractData(data.data);
 }
 
-const input = "Pforzheim".toLowerCase();
-updateWeatherUI(input);
+const initialCall = "New York".toLowerCase();
+updateWeatherUI(initialCall);
