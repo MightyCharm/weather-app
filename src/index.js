@@ -1,6 +1,12 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./styles.css";
 
+const APP_VERSION = "1.0.0";
+if (localStorage.getItem("app-version") !== APP_VERSION) {
+  localStorage.clear();
+  localStorage.setItem("app-version", APP_VERSION);
+}
+
 const uiAddress = document.getElementById("data-address");
 const uiDate = document.getElementById("data-date");
 const uiTime = document.getElementById("data-datetime");
