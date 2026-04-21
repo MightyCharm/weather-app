@@ -29,7 +29,7 @@ searchButton.addEventListener("click", (event) => {
 });
 
 function getUserInput() {
-  const input = inputForm.value.toLowerCase();
+  const input = inputForm.value.toLowerCase().trim();
   inputForm.value = "";
   return input;
 }
@@ -81,6 +81,19 @@ function getTime() {
   uiTime.textContent = `${hours}:${minutes}:${seconds} Uhr`;
 }
 
+function capitalizeCityName(address) {
+  console.log("function capitalizeCityName()");
+  console.log(address);
+  const arrAddress = address.split(/([ .])/);
+  const modifiedAddress = arrAddress
+    .map((value) => {
+      console.log(value);
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    })
+    .join("");
+  return modifiedAddress;
+}
+
 async function fetchData(input) {
   console.log("function fetchData() fetches and mdifies the data");
   const city = input;
@@ -91,7 +104,7 @@ async function fetchData(input) {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    console.log(`Successful fetch: ${response.ok} ${response.status}`);
+    //console.log(`Successful fetch: ${response.ok} ${response.status}`);
     const data = await response.json();
     const modifiedData = { data: processData(data), timestamp: Date.now() };
     return modifiedData;
@@ -100,10 +113,10 @@ async function fetchData(input) {
   }
 }
 
-async function extractData(data) {
-  console.log("function extractData()");
+async function updateUI(data) {
+  console.log("function updateUI()");
   //console.log(data);
-  const address = data.address;
+  const address = capitalizeCityName(data.address);
   const weekday = data.weekday;
   const date = data.date;
 
@@ -120,7 +133,7 @@ async function extractData(data) {
   const description = data.description;
   const icon = data.icon;
 
-  uiAddress.textContent = address.charAt(0).toUpperCase() + address.slice(1);
+  uiAddress.textContent = address;
   uiWeekdayDate.textContent = `${weekday}, ${date}`;
   uiFetchTime.textContent = `(Updated: ${fetchTime} Uhr)`;
   uiIcon.src = require(`./images/SVG/icons2/${icon}.svg`);
@@ -159,15 +172,13 @@ async function updateWeatherUI(input) {
     }
   }
 
-  console.log(
-    `final check\nisData: ${isData}\nisSameCity: ${isSameCity}\nisOldData: ${isDataStale}`,
-  );
+  //console.log(`final check\nisData: ${isData}\nisSameCity: ${isSameCity}\nisOldData: ${isDataStale}`,);
   if (isData === false || isSameCity === false || isDataStale === true) {
     console.log("----->A) NEW fetch request");
     data = await fetchData(input);
     setDataStorage(data);
   }
-  extractData(data.data);
+  updateUI(data.data);
 }
 
 const initialCall = "New York".toLowerCase();

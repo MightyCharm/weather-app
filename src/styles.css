@@ -319,7 +319,7 @@ body {
   }
 
   .input-search:hover {
-    cursor: pointer;
+    /* cursor: pointer; */
   }
 
   .social-link:hover {
