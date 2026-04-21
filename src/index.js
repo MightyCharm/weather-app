@@ -8,9 +8,9 @@ if (localStorage.getItem("app-version") !== APP_VERSION) {
 }
 
 const uiAddress = document.getElementById("data-address");
-const uiDate = document.getElementById("data-date");
-const uiTime = document.getElementById("data-datetime");
-const uiDay = document.getElementById("data-weekday");
+const uiTime = document.getElementById("current-time");
+const uiWeekdayDate = document.getElementById("data-weekday-date");
+const uiFetchTime = document.getElementById("data-datetime");
 const uiIcon = document.getElementById("data-icon");
 const uiConditions = document.getElementById("data-conditions");
 const uiTemp = document.getElementById("data-temp");
@@ -50,7 +50,7 @@ function processData(data) {
   const dataDate = data.days[0].datetime;
   const objDate = new Date(dataDate);
   const date = objDate.toLocaleDateString("de-DE");
-  const weekday = objDate.toLocaleDateString("en-EN", { weekday: "long" });
+  const weekday = objDate.toLocaleDateString("de-DE", { weekday: "long" });
   let customObj = {
     address: data.address,
     date: date,
@@ -71,12 +71,22 @@ function processData(data) {
   return customObj;
 }
 
+function getTime() {
+  console.log("function getTime()");
+  const time = new Date();
+  const hours = String(time.getHours()).padStart(2, "0");
+  const minutes = String(time.getMinutes()).padStart(2, "0");
+  const seconds = String(time.getSeconds()).padStart(2, "0");
+
+  uiTime.textContent = `${hours}:${minutes}:${seconds} Uhr`;
+}
+
 async function fetchData(input) {
   console.log("function fetchData() fetches and mdifies the data");
   const city = input;
   try {
     const response = await fetch(
-      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=metric&key=XNT5W4M924BSW324WY2Q8UA4N`,
+      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=metric&key=XNT5W4M924BSW324WY2Q8UA4N&lang=de`,
     );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -94,9 +104,8 @@ async function extractData(data) {
   console.log("function extractData()");
   //console.log(data);
   const address = data.address;
-
-  const date = data.date;
   const weekday = data.weekday;
+  const date = data.date;
 
   const fetchTime = data.time;
   const conditions = data.conditions;
@@ -112,9 +121,8 @@ async function extractData(data) {
   const icon = data.icon;
 
   uiAddress.textContent = address.charAt(0).toUpperCase() + address.slice(1);
-  uiDate.textContent = `${date}`;
-  uiTime.textContent = `${fetchTime} Uhr`;
-  uiDay.textContent = `${weekday}`;
+  uiWeekdayDate.textContent = `${weekday}, ${date}`;
+  uiFetchTime.textContent = `(Updated: ${fetchTime} Uhr)`;
   uiIcon.src = require(`./images/SVG/icons2/${icon}.svg`);
   uiConditions.textContent = conditions;
   uiTemp.textContent = `${temperature} °C`;
@@ -164,3 +172,5 @@ async function updateWeatherUI(input) {
 
 const initialCall = "New York".toLowerCase();
 updateWeatherUI(initialCall);
+
+setInterval(getTime, 1000);

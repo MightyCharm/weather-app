@@ -16,19 +16,18 @@
       <div class="container">
         <section class="section-form">
           <form class="form-element" method="get">
-            <label class="input-search-label" for="search"
-              >Enter Location</label
-            >
+            <label class="input-search-label" for="search">Ort eingeben</label>
             <input
               id="search"
               class="input-search"
               type="text"
               name="user-search"
+              placeholder="Ort finden..."
               required
             />
 
             <button id="search-btn" class="submit-btn" type="submit">
-              SEARCH
+              Suche
             </button>
           </form>
         </section>
@@ -38,11 +37,9 @@
           </div>
           <div class="card-current">
             <div class="div-current-date">
-              <span id="data-date" class="current-span-date"></span>
-              <span id="data-datetime" class="current-span-time"
-                >12:30:21 pm</span
-              >
-              <span id="data-weekday" class="current-span-day"></span>
+              <span id="current-time"></span>
+              <span id="data-weekday-date" class="current-span-date"></span>
+              <span id="data-datetime" class="current-span-time"></span>
             </div>
 
             <div class="div-current-img">
@@ -56,23 +53,23 @@
 
             <div class="div-current-temperature">
               <div class="temp-group">
-                <span class="temp-description">Temperature</span>
+                <span class="temp-description">Temperatur</span>
                 <span id="data-temp" class="current-temp"></span>
               </div>
               <div class="feel-temp-group">
-                <span class="feelslike-description">Feels like</span>
+                <span class="feelslike-description">Gefühlte Temperatur</span>
                 <span id="data-feelslike" class="current-feel-temp"></span>
               </div>
             </div>
 
             <div class="div-current-wind-humidity">
               <div class="wind-group">
-                <span class="wind-description">Windspeed</span>
+                <span class="wind-description">Windgeschwindigkeit</span>
                 <span id="data-wind" class="current-wind"></span>
               </div>
 
               <div class="humidity-group">
-                <span class="humidity-description">Humidity</span>
+                <span class="humidity-description">Luftfeuchtigkeit</span>
                 <span id="data-humidity" class="current-humidity"
                   >humidity</span
                 >
