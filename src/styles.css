@@ -1,3 +1,6 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap"); */
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap");
+
 *,
 *::before,
 *::after {
@@ -6,21 +9,25 @@
   box-sizing: border-box;
 }
 
+* {
+  font-family: "Rajdhani", sans-serif;
+  font-optical-sizing: auto;
+}
+
 :root {
-  --header-bg: grey;
+  --header-bg: hsl(0, 0%, 0%);
   --header-col: hsl(0, 0%, 100%);
 
-  --section-form-bg: hsl(0, 0%, 75%);
-  --section-form-col: hsl(0, 0%, 100%);
+  --section-form-bg: hsl(0, 0%, 0%);
+  --section-current-bg: hsl(0, 0%, 0%);
 
-  --section-current-bg: rgb(153, 151, 151);
-  --section-current-col: hsl(0, 0%, 100%);
-
-  --divs-current-bg: hsl(0, 1%, 39%);
+  --divs-current-bg: hsla(0, 0%, 44%, 0.2);
   --divs-current-col: hsl(0, 0%, 100%);
 
-  --footer-bg: grey;
+  --footer-bg: hsl(0, 0%, 0%);
   --footer-col: hsl(0, 0%, 100%);
+
+  --border-col: hsl(0, 0%, 29%);
 }
 
 html,
@@ -34,8 +41,6 @@ body {
   justify-items: center;
   align-items: center;
   font-family: "Inter", sans-serif;
-  /* background-color: grey; */
-  /* border: 1px solid red; */
 }
 
 .page-header,
@@ -43,12 +48,10 @@ body {
 .page-footer {
   height: 100%;
   width: 100%;
-  /* border: 1px solid blue; */
 }
 
 /* header ============================================ */
 .page-header {
-  /* border: 1px solid red; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,25 +68,25 @@ body {
 
 .page-main {
   /* border: 1px solid red; */
+  background-color: hsl(0, 0%, 0%);
 }
 
 /* main content ===================================== */
 .container {
-  /* border: 1px solid green; */
   width: 100%;
   height: 100%;
+  border-top: 1px solid var(--border-col);
+  border-bottom: 1px solid var(--border-col);
 }
 
 .section-form,
-.section-current,
-.section-forecast-day,
-.section-forecast-week {
+.section-current {
   padding: 1rem;
   /* border: 1px solid red; */
 }
 
 .section-form {
-  color: var(--section-form-col);
+  border-bottom: 1px solid var(--border-col);
   background-color: var(--section-form-bg);
 }
 
@@ -91,185 +94,209 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.2rem;
+  /* gap: 0.2rem; */
   /* border: 1px solid black; */
 }
 
 .input-search-label {
   font-size: 1.4rem;
   font-weight: bold;
-  /* border: 1px solid red; */
 }
 
 .input-search {
-  padding: 0.3rem 0.5rem;
+  padding: 0.4rem 0.5rem;
   font-size: 1rem;
-  /* border: 1px solid red; */
+  border-radius: 8px 0 0 8px;
+  border: none;
+  background-color: hsla(0, 0%, 41%, 0.4);
+}
+
+.input-search::placeholder {
+  color: hsl(0, 0%, 100%);
 }
 
 .submit-btn {
   padding: 0.4rem 0.5rem;
   font-size: 1rem;
+  font-weight: 500;
+  border-radius: 0px 8px 8px 0;
   border: none;
-  color: white;
-  background-color: hsl(219, 83%, 41%);
+  color: hsl(0, 0%, 0%);
+  background-color: hsl(0, 0%, 100%);
   transition: background-color 0.3s ease;
 }
 
 /* main content */
 .section-current {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-
-  color: var(--section-current-col);
-  background-color: var(--section-current-bg);
-  /* border: 5px solid red; */
-}
-
-.div-current-location-info {
-}
-
-.address {
-  font-size: 2rem;
-}
-
-.card-current {
   display: grid;
+  grid-template-rows: 1fr 2fr 2fr 0.5fr;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 0.5fr;
   gap: 1rem;
-  /* border: 2px solid red; */
+  background-color: var(--section-current-bg);
 }
 
-.div-current-date,
-.div-current-img,
+.div-current-location-date,
 .div-current-temperature,
-.div-current-wind-humidity,
-.div-current-description {
+.div-current-img,
+.div-extra-weather-data,
+.div-current-description,
+.div-extra-information {
   padding: 1rem;
   border-radius: 4px;
   color: var(--divs-current-col);
   background-color: var(--divs-current-bg);
+}
+
+.div-current-location-date {
+  grid-column: 1 / 3;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+
+  gap: 1rem;
+  width: 100%;
+}
+
+.resolved-address {
+  font-size: 1.2rem;
+  font-weight: bold;
+  /* border: 5px solid red; */
+}
+
+.current-date-time {
+  /* align-self: end; */
+  font-size: 1.1rem;
   /* border: 1px solid red; */
-}
-
-.div-current-date {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  /* color: blue; */
-}
-
-.current-span-date {
-  /* border: 1px solid red; */
-}
-
-.current-span-time {
-  /* border: 1px solid red; */
-}
-
-.current-span-day {
-  /* border: 1px solid red; */
-}
-
-.div-current-img {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  /* background-color: hsl(207, 96%, 55%); */
-}
-
-.current-weather-icon {
-  filter: invert(1);
-  width: 100px;
-  height: 100px;
-}
-
-.current-weather-conditions {
 }
 
 .div-current-temperature {
+  grid-column: 1 / 3;
+
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-items: center;
+  align-items: center;
+}
+
+.para-current-temp {
+  align-self: end;
+  justify-self: end;
+
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: end;
+  justify-items: end;
+}
+
+.span-current-temp {
+  font-size: 5rem;
+}
+
+.span-current-temp-unit {
+  font-size: 3rem;
+}
+
+.current-weather-icon {
+  align-self: start;
+  justify-self: start;
+  filter: invert(1);
+  width: 70px;
+  height: 70px;
+  padding-top: 0.5rem;
+}
+
+.para-current-weather-conditions {
+  grid-column: 1 / 3;
+  font-size: 1.4rem;
+}
+
+.div-extra-weather-data {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 1rem;
-}
-
-.temp-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.feel-temp-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.current-temp {
-  /* color: red; */
-}
-
-.current-feel-temp {
-  /* color: blue; */
-}
-
-.div-current-wind-humidity {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  /* border: 1px solid red; */
 }
 
 .wind-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr 1fr;
   align-items: center;
-  gap: 0.2rem;
-  /* border: 1px solid blue; */
+  justify-items: center;
+  /* border: 1px solid white; */
 }
 
-.humidity-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.2rem;
-  /* border: 1px solid green; */
+.wind-description {
+  width: 100%;
+  /* border: 1px solid white; */
 }
 
 .current-wind {
-  /* border: 1px solid red; */
+  grid-column: 2 / 3;
+  width: 100%;
+  font-weight: bold;
+}
+
+.humidity-group {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
+.humidity-description {
+  width: 100%;
 }
 
 .current-humidity {
-  /* border: 1px solid red; */
+  grid-column: 2 / 3;
+  width: 100%;
+  font-weight: bold;
+}
+
+.feel-temp-group {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  /* border: 1px solid white; */
+}
+
+.feelslike-description {
+  width: 100%;
+}
+
+.current-feel-temp {
+  grid-column: 2 / 3;
+  width: 100%;
+  font-weight: bold;
 }
 
 .div-current-description {
-  grid-column: 1 / 3;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
   text-align: center;
+}
+
+.div-extra-information {
+  grid-column: 1 / 3;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.time-data-fetched {
+  font-size: 0.9rem;
 }
 
 /* footer =========================================== */
@@ -285,6 +312,7 @@ body {
 }
 
 .footer-header {
+  font-size: 1rem;
 }
 
 .footer-ul {

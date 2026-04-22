@@ -16,13 +16,13 @@
       <div class="container">
         <section class="section-form">
           <form class="form-element" method="get">
-            <label class="input-search-label" for="search">Ort eingeben</label>
+            <!-- <label class="input-search-label" for="search">Ort eingeben</label> -->
             <input
               id="search"
               class="input-search"
               type="text"
               name="user-search"
-              placeholder="Ort finden..."
+              placeholder="Ort eingeben..."
               required
             />
 
@@ -32,53 +32,52 @@
           </form>
         </section>
         <section class="section-current">
-          <div class="div-current-location-info">
-            <h2 id="data-address" class="address"></h2>
+          <div class="div-current-location-date">
+            <p id="address" class="resolved-address"></p>
+            <p id="date-time" class="current-date-time">
+              <span id="data-date"></span><span id="current-time"></span>
+            </p>
           </div>
-          <div class="card-current">
-            <div class="div-current-date">
-              <span id="current-time"></span>
-              <span id="data-weekday-date" class="current-span-date"></span>
-              <span id="data-datetime" class="current-span-time"></span>
+
+          <div class="div-current-temperature">
+            <div class="para-current-temp">
+              <span id="data-temp" class="span-current-temp"></span>
+              <span class="span-current-temp-unit">°C</span>
+            </div>
+            <img
+              id="data-icon"
+              class="current-weather-icon"
+              alt="a sun almost totally covered by two clouds"
+            />
+
+            <p id="data-conditions" class="para-current-weather-conditions"></p>
+          </div>
+
+          <div class="div-extra-weather-data">
+            <div class="wind-group">
+              <i class="fa-solid fa-wind"></i>
+              <span class="wind-description">Windgeschwindigkeit</span>
+              <span id="data-wind" class="current-wind"></span>
             </div>
 
-            <div class="div-current-img">
-              <img
-                id="data-icon"
-                class="current-weather-icon"
-                alt="a sun almost totally covered by two clouds"
-              />
-              <p id="data-conditions" class="current-weather-conditions"></p>
+            <div class="humidity-group">
+              <i class="fa-solid fa-droplet"></i>
+              <span class="humidity-description">Luftfeuchtigkeit</span>
+              <span id="data-humidity" class="current-humidity">humidity</span>
             </div>
-
-            <div class="div-current-temperature">
-              <div class="temp-group">
-                <span class="temp-description">Temperatur</span>
-                <span id="data-temp" class="current-temp"></span>
-              </div>
-              <div class="feel-temp-group">
-                <span class="feelslike-description">Gefühlte Temperatur</span>
-                <span id="data-feelslike" class="current-feel-temp"></span>
-              </div>
+            <div class="feel-temp-group">
+              <i class="fa-solid fa-temperature-high"></i>
+              <span class="feelslike-description">Gefühlte Temperatur</span>
+              <span id="data-feelslike" class="current-feel-temp"></span>
             </div>
+          </div>
 
-            <div class="div-current-wind-humidity">
-              <div class="wind-group">
-                <span class="wind-description">Windgeschwindigkeit</span>
-                <span id="data-wind" class="current-wind"></span>
-              </div>
+          <div class="div-current-description">
+            <p id="data-description"></p>
+          </div>
 
-              <div class="humidity-group">
-                <span class="humidity-description">Luftfeuchtigkeit</span>
-                <span id="data-humidity" class="current-humidity"
-                  >humidity</span
-                >
-              </div>
-            </div>
-
-            <div class="div-current-description">
-              <p id="data-description"></p>
-            </div>
+          <div class="div-extra-information">
+            <p id="data-fetched-time" class="time-data-fetched"></p>
           </div>
         </section>
       </div>

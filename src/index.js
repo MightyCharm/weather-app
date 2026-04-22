@@ -1,16 +1,18 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./styles.css";
 
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "1.0.1";
 if (localStorage.getItem("app-version") !== APP_VERSION) {
   localStorage.clear();
   localStorage.setItem("app-version", APP_VERSION);
 }
 
-const uiAddress = document.getElementById("data-address");
-const uiTime = document.getElementById("current-time");
-const uiWeekdayDate = document.getElementById("data-weekday-date");
-const uiFetchTime = document.getElementById("data-datetime");
+const inputForm = document.getElementById("search");
+const searchButton = document.getElementById("search-btn");
+
+const uiResolvedAddress = document.getElementById("address");
+const uiCurrentTime = document.getElementById("current-time");
+const uiDataDate = document.getElementById("data-date");
 const uiIcon = document.getElementById("data-icon");
 const uiConditions = document.getElementById("data-conditions");
 const uiTemp = document.getElementById("data-temp");
@@ -18,9 +20,7 @@ const uiFeelTemp = document.getElementById("data-feelslike");
 const uiWind = document.getElementById("data-wind");
 const uiHumidity = document.getElementById("data-humidity");
 const uiDescription = document.getElementById("data-description");
-
-const inputForm = document.getElementById("search");
-const searchButton = document.getElementById("search-btn");
+const uiFetchTime = document.getElementById("data-fetched-time");
 
 searchButton.addEventListener("click", (event) => {
   event.preventDefault();
@@ -47,15 +47,16 @@ function setDataStorage(data) {
 
 function processData(data) {
   console.log("function processData()");
+  console.log(data);
   const dataDate = data.days[0].datetime;
   const objDate = new Date(dataDate);
   const date = objDate.toLocaleDateString("de-DE");
   const weekday = objDate.toLocaleDateString("de-DE", { weekday: "long" });
   let customObj = {
-    address: data.address,
+    resolvedAddress: capitalizeCityName(data.resolvedAddress),
     date: date,
     weekday: weekday,
-    time: data.currentConditions.datetime,
+    icon: data.currentConditions.icon,
     conditions: data.currentConditions.conditions,
     temperature: data.currentConditions.temp,
     feelslike: data.currentConditions.feelslike,
@@ -66,9 +67,14 @@ function processData(data) {
     pressure: data.currentConditions.pressure,
     uvindex: data.currentConditions.uvindex,
     description: data.description,
-    icon: data.currentConditions.icon,
+    fetchedTime: convertFetchTime(data.currentConditions.datetime),
   };
   return customObj;
+}
+
+function convertFetchTime(fetchedTime) {
+  console.log("function convertFetchTime()");
+  return fetchedTime.substring(0, 5);
 }
 
 function getTime() {
@@ -78,12 +84,11 @@ function getTime() {
   const minutes = String(time.getMinutes()).padStart(2, "0");
   const seconds = String(time.getSeconds()).padStart(2, "0");
 
-  uiTime.textContent = `${hours}:${minutes}:${seconds} Uhr`;
+  uiCurrentTime.textContent = `${hours}:${minutes}:${seconds}`;
 }
 
 function capitalizeCityName(address) {
   console.log("function capitalizeCityName()");
-  console.log(address);
   const arrAddress = address.split(/([ .])/);
   const modifiedAddress = arrAddress
     .map((value) => {
@@ -95,7 +100,7 @@ function capitalizeCityName(address) {
 }
 
 async function fetchData(input) {
-  console.log("function fetchData() fetches and mdifies the data");
+  console.log("function fetchData() fetches and modifies the data");
   const city = input;
   try {
     const response = await fetch(
@@ -116,11 +121,12 @@ async function fetchData(input) {
 async function updateUI(data) {
   console.log("function updateUI()");
   //console.log(data);
-  const address = capitalizeCityName(data.address);
+  const resolvedAddress = data.resolvedAddress;
   const weekday = data.weekday;
   const date = data.date;
 
-  const fetchTime = data.time;
+  const icon = data.icon;
+
   const conditions = data.conditions;
   const temperature = data.temperature;
   const feelslike = data.feelslike;
@@ -131,18 +137,18 @@ async function updateUI(data) {
   //const pressure = data.pressure;
   //const uvindex = data.uvindex;
   const description = data.description;
-  const icon = data.icon;
+  const fetchTime = data.fetchedTime;
 
-  uiAddress.textContent = address;
-  uiWeekdayDate.textContent = `${weekday}, ${date}`;
-  uiFetchTime.textContent = `(Updated: ${fetchTime} Uhr)`;
+  uiResolvedAddress.textContent = `${resolvedAddress}`;
+  uiDataDate.textContent = `${weekday}, ${date} | `;
   uiIcon.src = require(`./images/SVG/icons2/${icon}.svg`);
   uiConditions.textContent = conditions;
-  uiTemp.textContent = `${temperature} °C`;
+  uiTemp.textContent = `${temperature}`;
   uiFeelTemp.textContent = `${feelslike} °C`;
   uiWind.textContent = `${windspeed} km/h`;
   uiHumidity.textContent = `${humidity} %`;
   uiDescription.textContent = description;
+  uiFetchTime.textContent = `data last updated: ${fetchTime} Uhr`;
 }
 
 async function updateWeatherUI(input) {
@@ -166,7 +172,7 @@ async function updateWeatherUI(input) {
 
     const lastFetchMilliSeconds = currentTime - timestamp;
     const lastFetchMinutes = Math.ceil(lastFetchMilliSeconds / 1000 / 60);
-    console.log(`last fetch was ${lastFetchMinutes} min ago.`);
+    //console.log(`last fetch was ${lastFetchMinutes} min ago.`);
     if (lastFetchMinutes > 10) {
       isDataStale = true;
     }
@@ -181,7 +187,7 @@ async function updateWeatherUI(input) {
   updateUI(data.data);
 }
 
-const initialCall = "New York".toLowerCase();
+const initialCall = "New York, US".toLowerCase();
 updateWeatherUI(initialCall);
 
 setInterval(getTime, 1000);
