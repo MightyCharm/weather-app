@@ -1,7 +1,7 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./styles.css";
 
-const APP_VERSION = "1.0.1";
+const APP_VERSION = "1.1.0";
 if (localStorage.getItem("app-version") !== APP_VERSION) {
   localStorage.clear();
   localStorage.setItem("app-version", APP_VERSION);
@@ -47,28 +47,45 @@ function setDataStorage(data) {
 
 function processData(data) {
   console.log("function processData()");
-  console.log(data);
+  //console.log(data);
   const dataDate = data.days[0].datetime;
   const objDate = new Date(dataDate);
   const date = objDate.toLocaleDateString("de-DE");
   const weekday = objDate.toLocaleDateString("de-DE", { weekday: "long" });
+
+  const rawForecasts = data.days.slice(1, 7);
+  //console.log(rawForecast);
+  const modifiedForecasts = rawForecasts.map((obj) => {
+    return {
+      datetime: obj.datetime,
+      icon: obj.icon,
+      minTemp: obj.tempmin,
+      maxTemp: obj.tempmax,
+      conditions: obj.conditions,
+    };
+  });
+
   let customObj = {
-    resolvedAddress: capitalizeCityName(data.resolvedAddress),
-    date: date,
-    weekday: weekday,
-    icon: data.currentConditions.icon,
-    conditions: data.currentConditions.conditions,
-    temperature: data.currentConditions.temp,
-    feelslike: data.currentConditions.feelslike,
-    humidity: data.currentConditions.humidity,
-    windspeed: data.currentConditions.windspeed,
-    sunrise: data.currentConditions.sunrise,
-    sunset: data.currentConditions.sunset,
-    pressure: data.currentConditions.pressure,
-    uvindex: data.currentConditions.uvindex,
-    description: data.description,
-    fetchedTime: convertFetchTime(data.currentConditions.datetime),
+    current: {
+      resolvedAddress: capitalizeCityName(data.resolvedAddress),
+      date: date,
+      weekday: weekday,
+      icon: data.currentConditions.icon,
+      conditions: data.currentConditions.conditions,
+      temperature: data.currentConditions.temp,
+      feelslike: data.currentConditions.feelslike,
+      humidity: data.currentConditions.humidity,
+      windspeed: data.currentConditions.windspeed,
+      sunrise: data.currentConditions.sunrise,
+      sunset: data.currentConditions.sunset,
+      pressure: data.currentConditions.pressure,
+      uvindex: data.currentConditions.uvindex,
+      description: data.description,
+      fetchedTime: convertFetchTime(data.currentConditions.datetime),
+    },
+    forecasts: modifiedForecasts,
   };
+  //console.log(customObj);
   return customObj;
 }
 
@@ -92,7 +109,6 @@ function capitalizeCityName(address) {
   const arrAddress = address.split(/([ .])/);
   const modifiedAddress = arrAddress
     .map((value) => {
-      console.log(value);
       return value.charAt(0).toUpperCase() + value.slice(1);
     })
     .join("");
@@ -111,6 +127,7 @@ async function fetchData(input) {
     }
     //console.log(`Successful fetch: ${response.ok} ${response.status}`);
     const data = await response.json();
+    // console.log(data);
     const modifiedData = { data: processData(data), timestamp: Date.now() };
     return modifiedData;
   } catch (error) {
@@ -118,26 +135,26 @@ async function fetchData(input) {
   }
 }
 
-async function updateUI(data) {
-  console.log("function updateUI()");
+async function updateCurrentWeatherUI(data) {
+  console.log("function updateCurrentWeatherUI()");
   //console.log(data);
-  const resolvedAddress = data.resolvedAddress;
-  const weekday = data.weekday;
-  const date = data.date;
+  const resolvedAddress = data.current.resolvedAddress;
+  const weekday = data.current.weekday;
+  const date = data.current.date;
 
-  const icon = data.icon;
+  const icon = data.current.icon;
 
-  const conditions = data.conditions;
-  const temperature = data.temperature;
-  const feelslike = data.feelslike;
-  const humidity = data.humidity;
-  const windspeed = data.windspeed;
-  //const sunrise = data.sunrise;
-  //const sunset = data.sunset;
-  //const pressure = data.pressure;
-  //const uvindex = data.uvindex;
-  const description = data.description;
-  const fetchTime = data.fetchedTime;
+  const conditions = data.current.conditions;
+  const temperature = data.current.temperature;
+  const feelslike = data.current.feelslike;
+  const humidity = data.current.humidity;
+  const windspeed = data.current.windspeed;
+  //const sunrise = data.current.sunrise;
+  //const sunset = data.current.sunset;
+  //const pressure = data.current.pressure;
+  //const uvindex = data.current.uvindex;
+  const description = data.current.description;
+  const fetchTime = data.current.fetchedTime;
 
   uiResolvedAddress.textContent = `${resolvedAddress}`;
   uiDataDate.textContent = `${weekday}, ${date} | `;
@@ -149,6 +166,14 @@ async function updateUI(data) {
   uiHumidity.textContent = `${humidity} %`;
   uiDescription.textContent = description;
   uiFetchTime.textContent = `data last updated: ${fetchTime} Uhr`;
+}
+
+async function updateForecastUI(data) {
+  console.log("function updateForecast()");
+  console.log(data);
+  data.forEach((obj) => {
+    console.log(obj);
+  });
 }
 
 async function updateWeatherUI(input) {
@@ -184,7 +209,9 @@ async function updateWeatherUI(input) {
     data = await fetchData(input);
     setDataStorage(data);
   }
-  updateUI(data.data);
+  //console.log(data);
+  updateCurrentWeatherUI(data.data);
+  updateForecastUI(data.data.forecasts);
 }
 
 const initialCall = "New York, US".toLowerCase();
