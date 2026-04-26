@@ -7,9 +7,12 @@ if (localStorage.getItem("app-version") !== APP_VERSION) {
   localStorage.setItem("app-version", APP_VERSION);
 }
 
+// unit & color theme buttons
+const btnTempUnit = document.getElementById("btn-temp");
+const btnColorTheme = document.getElementById("btn-color");
+// form input elements
 const inputForm = document.getElementById("search");
 const searchButton = document.getElementById("search-btn");
-
 // current weather
 const uiResolvedAddress = document.getElementById("address");
 const uiCurrentTime = document.getElementById("current-time");
@@ -22,9 +25,16 @@ const uiWind = document.getElementById("data-wind");
 const uiHumidity = document.getElementById("data-humidity");
 const uiDescription = document.getElementById("data-description");
 const uiFetchTime = document.getElementById("data-fetched-time");
-
 // forecast
 const cardsForecast = document.querySelectorAll(".card-forecast");
+
+btnTempUnit.addEventListener("click", () => {
+  console.log("toggle unit");
+});
+
+btnColorTheme.addEventListener("click", () => {
+  console.log("toggle color theme");
+});
 
 searchButton.addEventListener("click", (event) => {
   event.preventDefault();
@@ -167,11 +177,9 @@ async function updateCurrentWeatherUI(data) {
 }
 
 async function updateForecastUI(data) {
-  console.log("function updateForecast()");
-  console.log(data);
+  // console.log(data);
   data.forEach((obj, index) => {
     const card = cardsForecast[index];
-    console.log(card);
     const uiWeekday = card.querySelector(".data-forecast-weekday");
     const uiIcon = card.querySelector(".data-forecast-icon");
     const uiTemp = card.querySelector(".data-forecast-temp");
@@ -226,3 +234,5 @@ const initialCall = "New York, US".toLowerCase();
 updateWeatherUI(initialCall);
 
 setInterval(getTime, 1000);
+
+// ☼ | ☾
