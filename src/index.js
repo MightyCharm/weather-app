@@ -7,6 +7,7 @@ if (localStorage.getItem("app-version") !== APP_VERSION) {
   localStorage.setItem("app-version", APP_VERSION);
 }
 
+const body = document.querySelector("body");
 // unit & color theme buttons
 const btnTempUnit = document.getElementById("btn-temp");
 const btnColorTheme = document.getElementById("btn-color");
@@ -34,6 +35,14 @@ btnTempUnit.addEventListener("click", () => {
 
 btnColorTheme.addEventListener("click", () => {
   console.log("toggle color theme");
+  if (!body.getAttribute("data-theme")) {
+    body.setAttribute("data-theme", "light");
+    console.log(body);
+    return;
+  }
+  body.removeAttribute("data-theme");
+
+  console.log(body);
 });
 
 searchButton.addEventListener("click", (event) => {
@@ -236,3 +245,4 @@ updateWeatherUI(initialCall);
 setInterval(getTime, 1000);
 
 // ☼ | ☾
+console.log(window.matchMedia("(prefers-color-scheme:dark)"));

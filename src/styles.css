@@ -30,14 +30,39 @@ svg {
   --section-bg: hsl(0, 0%, 0%);
 
   --div-current-bg: hsla(0, 0%, 100%, 0.1);
-  --div-forecast-bg: hsl(0, 0%, 100%, 0.1);
-  --section-extra-information-bg: var(--div-forecast-bg);
-  --card-forecast-bg: hsl(0, 0%, 100%, 0.1);
+  --card-forecast-bg: hsla(0, 0%, 100%, 0.1);
 
+  --section-extra-information-bg: hsl(0, 0%, 100%, 0.1);
   --footer-col: hsl(0, 0%, 100%);
   --footer-bg: hsl(0, 0%, 0%);
 
   --border-col: hsl(0, 0%, 29%);
+  --btn-bg: hsl(0, 0%, 91%);
+  --invert-col-img: 1;
+  --input-col: hsla(0, 0%, 100%, 0.3);
+  --social-icon-col: hsl(0, 0%, 100%);
+}
+
+body[data-theme="light"] {
+  /* --header-col: black; */
+  --header-bg: hsl(216, 72%, 39%); /* white */
+
+  --container-bg: hsl(216, 72%, 39%); /* white */
+
+  /* --section-col: rgb(0, 0, 0); black */
+  --section-bg: hsl(216, 72%, 39%); /* white */
+
+  --div-current-bg: hsla(0, 0%, 0%, 0.267);
+  --card-forecast-bg: hsla(0, 0%, 0%, 0.267);
+
+  --section-extra-information-bg: hsla(0, 0%, 0%, 0.267);
+  --footer-bg: hsl(216, 72%, 39%); /* white */
+
+  --border-col: hsl(0, 0%, 43%);
+  --btn-bg: hsl(0, 0%, 100%);
+  /* --invert-col-img: 0; */
+  --input-col: hsla(0, 0%, 3%, 0.7);
+  /* --social-icon-col: hsl(0, 0%, 0%); */
 }
 
 html,
@@ -88,6 +113,7 @@ body {
   padding: 0.1rem 1rem 0rem 1rem;
   text-align: center;
   border: none;
+  background-color: var(--btn-bg);
 }
 
 .page-main {
@@ -107,6 +133,7 @@ body {
 
 .form-element {
   display: flex;
+  gap: 0.1rem;
 }
 
 .input-search {
@@ -114,7 +141,7 @@ body {
   border: none;
   padding: 0.2rem 0.5rem;
   color: white;
-  background-color: hsla(0, 0%, 100%, 0.3);
+  background-color: var(--input-col);
 }
 
 .input-search::placeholder {
@@ -125,6 +152,7 @@ body {
   font-size: 1.2rem;
   padding: 0 0.5rem;
   border: none;
+  background-color: var(--btn-bg);
 }
 
 .section-current {
@@ -193,7 +221,7 @@ body {
   min-height: 70px;
   width: 50%;
   height: 50%;
-  filter: invert(1);
+  filter: invert(var(--invert-col-img));
 }
 
 .current-weather-conditions {
@@ -264,7 +292,7 @@ body {
 }
 
 .data-forecast-icon {
-  filter: invert(1);
+  filter: invert(var(--invert-col-img));
   width: 20%;
   height: 20%;
   min-width: 60px;
@@ -309,7 +337,7 @@ body {
 .list-item {
 }
 .social-link {
-  color: white;
+  color: var(--social-icon-col);
   transition: color 0.3s ease;
 }
 
