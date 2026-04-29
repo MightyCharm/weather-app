@@ -28,21 +28,24 @@ const uiDescription = document.getElementById("data-description");
 const uiFetchTime = document.getElementById("data-fetched-time");
 // forecast
 const cardsForecast = document.querySelectorAll(".card-forecast");
+// get object for checking if dark theme is selected
+const mediaQueryList = window.matchMedia("(prefers-color-scheme:dark");
+mediaQueryList.addEventListener("change", () => {
+  setAppTheme(mediaQueryList.matches);
+});
 
 btnTempUnit.addEventListener("click", () => {
   console.log("toggle unit");
 });
 
 btnColorTheme.addEventListener("click", () => {
-  console.log("toggle color theme");
-  if (!body.getAttribute("data-theme")) {
-    body.setAttribute("data-theme", "light");
-    console.log(body);
-    return;
+  console.log(body.getAttribute("data-theme"));
+  if (body.getAttribute("data-theme")) {
+    saveAppThemeStorage("dark");
+  } else {
+    saveAppThemeStorage("light");
   }
-  body.removeAttribute("data-theme");
-
-  console.log(body);
+  setAppTheme();
 });
 
 searchButton.addEventListener("click", (event) => {
@@ -51,10 +54,30 @@ searchButton.addEventListener("click", (event) => {
   updateWeatherUI(input);
 });
 
-function getUserInput() {
-  const input = inputForm.value.toLowerCase().trim();
-  inputForm.value = "";
-  return input;
+function setAppTheme(arg) {
+  const theme = getAppThemeStorage();
+  // if no app theme was saved, apply browser theme
+  if (!theme) {
+    if (arg) {
+      body.removeAttribute("data-theme");
+    } else {
+      body.setAttribute("data-theme", "light");
+    }
+  } else {
+    if (theme === "light") {
+      body.setAttribute("data-theme", "light");
+    } else {
+      body.removeAttribute("data-theme");
+    }
+  }
+}
+
+function saveAppThemeStorage(theme) {
+  localStorage.setItem("theme", JSON.stringify(theme));
+}
+
+function getAppThemeStorage() {
+  return JSON.parse(localStorage.getItem("theme"));
 }
 
 function getDataStorage() {
@@ -64,6 +87,12 @@ function getDataStorage() {
 
 function setDataStorage(data) {
   localStorage.setItem("data", JSON.stringify(data));
+}
+
+function getUserInput() {
+  const input = inputForm.value.toLowerCase().trim();
+  inputForm.value = "";
+  return input;
 }
 
 function processData(data) {
@@ -227,22 +256,22 @@ async function updateWeatherUI(input) {
     }
   }
 
-  //console.log(`final check\nisData: ${isData}\nisSameCity: ${isSameCity}\nisOldData: ${isDataStale}`,);
   if (isData === false || isSameCity === false || isDataStale === true) {
     console.log("----->A) NEW fetch request");
     data = await fetchData(input);
     setDataStorage(data);
   }
-  //console.log(data);
   updateCurrentWeatherUI(data.data);
   updateForecastUI(data.data.forecasts);
 }
 
-console.log("start ================");
-const initialCall = "New York, US".toLowerCase();
-updateWeatherUI(initialCall);
+function init() {
+  console.log("====== start program ======");
+  setAppTheme(mediaQueryList.matches);
+  const initialCall = "New York, US".toLowerCase();
+  updateWeatherUI(initialCall);
 
-setInterval(getTime, 1000);
+  setInterval(getTime, 1000);
+}
 
-// ☼ | ☾
-console.log(window.matchMedia("(prefers-color-scheme:dark)"));
+init();
