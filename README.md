@@ -14,6 +14,7 @@ It also displays a 6 day forecast.
 - 6-day weather forecast
 - current time
 - responsive layout
+- switch between light & dark theme, if nothing is selected browser theme is applied
 
 ## ⚙️ Tech Stack
 
