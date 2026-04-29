@@ -7,9 +7,13 @@ if (localStorage.getItem("app-version") !== APP_VERSION) {
   localStorage.setItem("app-version", APP_VERSION);
 }
 
+const body = document.querySelector("body");
+// unit & color theme buttons
+const btnTempUnit = document.getElementById("btn-temp");
+const btnColorTheme = document.getElementById("btn-color");
+// form input elements
 const inputForm = document.getElementById("search");
 const searchButton = document.getElementById("search-btn");
-
 // current weather
 const uiResolvedAddress = document.getElementById("address");
 const uiCurrentTime = document.getElementById("current-time");
@@ -22,9 +26,27 @@ const uiWind = document.getElementById("data-wind");
 const uiHumidity = document.getElementById("data-humidity");
 const uiDescription = document.getElementById("data-description");
 const uiFetchTime = document.getElementById("data-fetched-time");
-
 // forecast
 const cardsForecast = document.querySelectorAll(".card-forecast");
+// get object for checking if dark theme is selected
+const mediaQueryList = window.matchMedia("(prefers-color-scheme:dark");
+mediaQueryList.addEventListener("change", () => {
+  setAppTheme(mediaQueryList.matches);
+});
+
+btnTempUnit.addEventListener("click", () => {
+  console.log("toggle unit");
+});
+
+btnColorTheme.addEventListener("click", () => {
+  console.log(body.getAttribute("data-theme"));
+  if (body.getAttribute("data-theme")) {
+    saveAppThemeStorage("dark");
+  } else {
+    saveAppThemeStorage("light");
+  }
+  setAppTheme();
+});
 
 searchButton.addEventListener("click", (event) => {
   event.preventDefault();
@@ -32,10 +54,30 @@ searchButton.addEventListener("click", (event) => {
   updateWeatherUI(input);
 });
 
-function getUserInput() {
-  const input = inputForm.value.toLowerCase().trim();
-  inputForm.value = "";
-  return input;
+function setAppTheme(arg) {
+  const theme = getAppThemeStorage();
+  // if no app theme was saved, apply browser theme
+  if (!theme) {
+    if (arg) {
+      body.removeAttribute("data-theme");
+    } else {
+      body.setAttribute("data-theme", "light");
+    }
+  } else {
+    if (theme === "light") {
+      body.setAttribute("data-theme", "light");
+    } else {
+      body.removeAttribute("data-theme");
+    }
+  }
+}
+
+function saveAppThemeStorage(theme) {
+  localStorage.setItem("theme", JSON.stringify(theme));
+}
+
+function getAppThemeStorage() {
+  return JSON.parse(localStorage.getItem("theme"));
 }
 
 function getDataStorage() {
@@ -45,6 +87,12 @@ function getDataStorage() {
 
 function setDataStorage(data) {
   localStorage.setItem("data", JSON.stringify(data));
+}
+
+function getUserInput() {
+  const input = inputForm.value.toLowerCase().trim();
+  inputForm.value = "";
+  return input;
 }
 
 function processData(data) {
@@ -167,11 +215,9 @@ async function updateCurrentWeatherUI(data) {
 }
 
 async function updateForecastUI(data) {
-  console.log("function updateForecast()");
-  console.log(data);
+  // console.log(data);
   data.forEach((obj, index) => {
     const card = cardsForecast[index];
-    console.log(card);
     const uiWeekday = card.querySelector(".data-forecast-weekday");
     const uiIcon = card.querySelector(".data-forecast-icon");
     const uiTemp = card.querySelector(".data-forecast-temp");
@@ -210,19 +256,22 @@ async function updateWeatherUI(input) {
     }
   }
 
-  //console.log(`final check\nisData: ${isData}\nisSameCity: ${isSameCity}\nisOldData: ${isDataStale}`,);
   if (isData === false || isSameCity === false || isDataStale === true) {
     console.log("----->A) NEW fetch request");
     data = await fetchData(input);
     setDataStorage(data);
   }
-  //console.log(data);
   updateCurrentWeatherUI(data.data);
   updateForecastUI(data.data.forecasts);
 }
 
-console.log("start ================");
-const initialCall = "New York, US".toLowerCase();
-updateWeatherUI(initialCall);
+function init() {
+  console.log("====== start program ======");
+  setAppTheme(mediaQueryList.matches);
+  const initialCall = "New York, US".toLowerCase();
+  updateWeatherUI(initialCall);
 
-setInterval(getTime, 1000);
+  setInterval(getTime, 1000);
+}
+
+init();

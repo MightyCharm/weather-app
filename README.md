@@ -5,11 +5,15 @@ Project: Weather App (The Odin Project: JavaScript Course)
 ## ℹ️ Description
 
 This program fetches data from visual crossing and displays current time, date and weather.
+It also displays a 6 day forecast.
 
 ## ✅ Features
 
-- shows current time/date/weather
-- shows forecast
+- takes a city name as user input
+- current weather
+- 6-day weather forecast
+- current time
+- responsive layout
 
 ## ⚙️ Tech Stack
 
