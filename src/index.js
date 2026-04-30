@@ -1,5 +1,11 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./styles.css";
+import {
+  setThemeStorage,
+  getThemeStorage,
+  getDataStorage,
+  setDataStorage,
+} from "./storage.js";
 
 const APP_VERSION = "1.2.0";
 if (localStorage.getItem("app-version") !== APP_VERSION) {
@@ -41,9 +47,9 @@ btnTempUnit.addEventListener("click", () => {
 btnColorTheme.addEventListener("click", () => {
   console.log(body.getAttribute("data-theme"));
   if (body.getAttribute("data-theme")) {
-    saveAppThemeStorage("dark");
+    setThemeStorage("dark");
   } else {
-    saveAppThemeStorage("light");
+    setThemeStorage("light");
   }
   setAppTheme();
 });
@@ -55,7 +61,7 @@ searchButton.addEventListener("click", (event) => {
 });
 
 function setAppTheme(arg) {
-  const theme = getAppThemeStorage();
+  const theme = getThemeStorage();
   // if no app theme was saved, apply browser theme
   if (!theme) {
     if (arg) {
@@ -70,23 +76,6 @@ function setAppTheme(arg) {
       body.removeAttribute("data-theme");
     }
   }
-}
-
-function saveAppThemeStorage(theme) {
-  localStorage.setItem("theme", JSON.stringify(theme));
-}
-
-function getAppThemeStorage() {
-  return JSON.parse(localStorage.getItem("theme"));
-}
-
-function getDataStorage() {
-  const checkData = JSON.parse(localStorage.getItem("data"));
-  return checkData ? checkData : false;
-}
-
-function setDataStorage(data) {
-  localStorage.setItem("data", JSON.stringify(data));
 }
 
 function getUserInput() {
@@ -124,7 +113,7 @@ function processData(data) {
       icon: data.currentConditions.icon,
       conditions: data.currentConditions.conditions,
       temperature: Math.round(data.currentConditions.temp),
-      feelslike: data.currentConditions.feelslike,
+      feelslike: Math.round(data.currentConditions.feelslike),
       humidity: data.currentConditions.humidity,
       windspeed: data.currentConditions.windspeed,
       sunrise: data.currentConditions.sunrise,
