@@ -1,5 +1,12 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./styles.css";
+import {
+  setThemeStorage,
+  getThemeStorage,
+  getDataStorage,
+  setDataStorage,
+} from "./storage.js";
+import { getCustomObject } from "./dataProcessor.js";
 
 const APP_VERSION = "1.2.0";
 if (localStorage.getItem("app-version") !== APP_VERSION) {
@@ -41,9 +48,9 @@ btnTempUnit.addEventListener("click", () => {
 btnColorTheme.addEventListener("click", () => {
   console.log(body.getAttribute("data-theme"));
   if (body.getAttribute("data-theme")) {
-    saveAppThemeStorage("dark");
+    setThemeStorage("dark");
   } else {
-    saveAppThemeStorage("light");
+    setThemeStorage("light");
   }
   setAppTheme();
 });
@@ -51,11 +58,11 @@ btnColorTheme.addEventListener("click", () => {
 searchButton.addEventListener("click", (event) => {
   event.preventDefault();
   const input = getUserInput();
-  updateWeatherUI(input);
+  updateUI(input);
 });
 
 function setAppTheme(arg) {
-  const theme = getAppThemeStorage();
+  const theme = getThemeStorage();
   // if no app theme was saved, apply browser theme
   if (!theme) {
     if (arg) {
@@ -72,76 +79,10 @@ function setAppTheme(arg) {
   }
 }
 
-function saveAppThemeStorage(theme) {
-  localStorage.setItem("theme", JSON.stringify(theme));
-}
-
-function getAppThemeStorage() {
-  return JSON.parse(localStorage.getItem("theme"));
-}
-
-function getDataStorage() {
-  const checkData = JSON.parse(localStorage.getItem("data"));
-  return checkData ? checkData : false;
-}
-
-function setDataStorage(data) {
-  localStorage.setItem("data", JSON.stringify(data));
-}
-
 function getUserInput() {
   const input = inputForm.value.toLowerCase().trim();
   inputForm.value = "";
   return input;
-}
-
-function processData(data) {
-  //console.log(data);
-  const dataDate = data.days[0].datetime;
-  const objDate = new Date(dataDate);
-  const date = objDate.toLocaleDateString("de-DE");
-  const weekday = objDate.toLocaleDateString("de-DE", { weekday: "long" });
-
-  const rawForecasts = data.days.slice(1, 7);
-  //console.log(rawForecasts);
-  const modifiedForecasts = rawForecasts.map((obj) => {
-    const date = new Date(obj.datetime);
-    const day = date.toLocaleDateString("de-DE", { weekday: "long" });
-    return {
-      weekday: day,
-      icon: obj.icon,
-      minTemp: Math.round(obj.tempmin),
-      maxTemp: Math.round(obj.tempmax),
-      conditions: obj.conditions,
-    };
-  });
-
-  let customObj = {
-    current: {
-      resolvedAddress: capitalizeCityName(data.resolvedAddress),
-      date: date,
-      weekday: weekday,
-      icon: data.currentConditions.icon,
-      conditions: data.currentConditions.conditions,
-      temperature: Math.round(data.currentConditions.temp),
-      feelslike: data.currentConditions.feelslike,
-      humidity: data.currentConditions.humidity,
-      windspeed: data.currentConditions.windspeed,
-      sunrise: data.currentConditions.sunrise,
-      sunset: data.currentConditions.sunset,
-      pressure: data.currentConditions.pressure,
-      uvindex: data.currentConditions.uvindex,
-      description: data.description,
-      fetchedTime: convertFetchTime(data.currentConditions.datetime),
-    },
-    forecasts: modifiedForecasts,
-  };
-  //console.log(customObj);
-  return customObj;
-}
-
-function convertFetchTime(fetchedTime) {
-  return fetchedTime.substring(0, 5);
 }
 
 function getTime() {
@@ -151,16 +92,6 @@ function getTime() {
   const seconds = String(time.getSeconds()).padStart(2, "0");
 
   uiCurrentTime.textContent = `${hours}:${minutes}:${seconds}`;
-}
-
-function capitalizeCityName(address) {
-  const arrAddress = address.split(/([ .])/);
-  const modifiedAddress = arrAddress
-    .map((value) => {
-      return value.charAt(0).toUpperCase() + value.slice(1);
-    })
-    .join("");
-  return modifiedAddress;
 }
 
 async function fetchData(input) {
@@ -175,14 +106,14 @@ async function fetchData(input) {
     //console.log(`Successful fetch: ${response.ok} ${response.status}`);
     const data = await response.json();
     // console.log(data);
-    const modifiedData = { data: processData(data), timestamp: Date.now() };
+    const modifiedData = { data: getCustomObject(data), timestamp: Date.now() };
     return modifiedData;
   } catch (error) {
     console.log(error);
   }
 }
 
-async function updateCurrentWeatherUI(data) {
+async function updateCurrentUI(data) {
   //console.log(data);
   const resolvedAddress = data.current.resolvedAddress;
   const weekday = data.current.weekday;
@@ -214,7 +145,7 @@ async function updateCurrentWeatherUI(data) {
   uiFetchTime.textContent = `data last updated: ${fetchTime} Uhr`;
 }
 
-async function updateForecastUI(data) {
+async function updateForecast(data) {
   // console.log(data);
   data.forEach((obj, index) => {
     const card = cardsForecast[index];
@@ -230,7 +161,7 @@ async function updateForecastUI(data) {
   });
 }
 
-async function updateWeatherUI(input) {
+async function updateUI(input) {
   let data = getDataStorage(input);
   let isData = false;
   let isSameCity = false;
@@ -257,19 +188,19 @@ async function updateWeatherUI(input) {
   }
 
   if (isData === false || isSameCity === false || isDataStale === true) {
-    console.log("----->A) NEW fetch request");
+    console.log("-----> A) NEW fetch request");
     data = await fetchData(input);
     setDataStorage(data);
   }
-  updateCurrentWeatherUI(data.data);
-  updateForecastUI(data.data.forecasts);
+  updateCurrentUI(data.data);
+  updateForecast(data.data.forecasts);
 }
 
 function init() {
   console.log("====== start program ======");
   setAppTheme(mediaQueryList.matches);
   const initialCall = "New York, US".toLowerCase();
-  updateWeatherUI(initialCall);
+  updateUI(initialCall);
 
   setInterval(getTime, 1000);
 }
