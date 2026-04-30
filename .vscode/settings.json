@@ -5,7 +5,9 @@
     "readme",
     "ui",
     "readme",
-    "data"
+    "data",
+    "storage",
+    "dataProcessor"
   ],
   "cSpell.ignoreWords": ["sololearn"]
 }
