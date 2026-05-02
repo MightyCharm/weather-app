@@ -14,5 +14,21 @@ function getDataStorage() {
 function setDataStorage(data) {
   localStorage.setItem("data", JSON.stringify(data));
 }
+// ------------------------------------------------------------------
 
-export { setThemeStorage, getThemeStorage, getDataStorage, setDataStorage };
+function setUnitStorage(unit) {
+  localStorage.setItem("unit", JSON.stringify(unit));
+}
+
+function getUnitStorage() {
+  return JSON.parse(localStorage.getItem("unit"));
+}
+
+export {
+  getThemeStorage,
+  setThemeStorage,
+  getDataStorage,
+  setDataStorage,
+  getUnitStorage,
+  setUnitStorage,
+};

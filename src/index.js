@@ -1,14 +1,16 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import "./styles.css";
 import {
-  setThemeStorage,
   getThemeStorage,
+  setThemeStorage,
   getDataStorage,
   setDataStorage,
+  getUnitStorage,
+  setUnitStorage,
 } from "./storage.js";
-import { getCustomObject } from "./dataProcessor.js";
+import { getCustomObject, customData } from "./dataProcessor.js";
 
-const APP_VERSION = "1.2.0";
+const APP_VERSION = "1.2.1";
 if (localStorage.getItem("app-version") !== APP_VERSION) {
   localStorage.clear();
   localStorage.setItem("app-version", APP_VERSION);
@@ -28,6 +30,7 @@ const uiDataDate = document.getElementById("data-date");
 const uiIcon = document.getElementById("data-icon");
 const uiConditions = document.getElementById("data-conditions");
 const uiTemp = document.getElementById("data-temp");
+const uiTempUnit = document.getElementById("current-temp-unit");
 const uiFeelTemp = document.getElementById("data-feelslike");
 const uiWind = document.getElementById("data-wind");
 const uiHumidity = document.getElementById("data-humidity");
@@ -42,7 +45,8 @@ mediaQueryList.addEventListener("change", () => {
 });
 
 btnTempUnit.addEventListener("click", () => {
-  console.log("toggle unit");
+  toggleTemperatureUnit();
+  applyTemperatureUnit();
 });
 
 btnColorTheme.addEventListener("click", () => {
@@ -60,6 +64,56 @@ searchButton.addEventListener("click", (event) => {
   const input = getUserInput();
   updateUI(input);
 });
+
+function toggleTemperatureUnit() {
+  const unit = getUnitStorage();
+  if (unit === "celsius") {
+    setUnitStorage("fahrenheit");
+  } else {
+    setUnitStorage("celsius");
+  }
+}
+
+function applyTemperatureUnit() {
+  console.log("applyTemperatureUnit()");
+  //console.log(customData);
+  const unit = getUnitStorage();
+  if (unit === "celsius") {
+    btnTempUnit.textContent = "°C";
+    uiTemp.textContent = customData.current.temperature;
+    uiTempUnit.textContent = "°C";
+    uiFeelTemp.textContent = `${customData.current.feelslike} °C`;
+
+    customData.forecasts.forEach((obj, index) => {
+      const card = cardsForecast[index];
+      const uiForecastTemps = card.querySelector(".data-forecast-temp");
+      uiForecastTemps.textContent = `${obj.minTemp}° - ${obj.maxTemp}°`;
+    });
+  } else {
+    btnTempUnit.textContent = "°F";
+
+    const currTempF = Math.round((customData.current.temperature * 9) / 5 + 32);
+    const feelTempF = Math.round((customData.current.feelslike * 9) / 5 + 32);
+    uiTemp.textContent = currTempF;
+    uiTempUnit.textContent = "°F";
+    uiFeelTemp.textContent = `${feelTempF} °F`;
+    customData.forecasts.forEach((obj, index) => {
+      const minF = Math.round((obj.minTemp * 9) / 5 + 32);
+      const maxF = Math.round((obj.maxTemp * 9) / 5 + 32);
+
+      const card = cardsForecast[index];
+      const uiTemp = card.querySelector(".data-forecast-temp");
+      uiTemp.textContent = `${minF}° - ${maxF}°`;
+    });
+  }
+}
+
+function initializeTemperaturUnit() {
+  const tempUnit = getUnitStorage();
+  if (tempUnit !== "celsius" && tempUnit !== "fahrenheit") {
+    setUnitStorage("celsius");
+  }
+}
 
 function setAppTheme(arg) {
   const theme = getThemeStorage();
@@ -167,10 +221,10 @@ async function updateUI(input) {
   let isSameCity = false;
   let isDataStale = false;
   isData = data ? true : false;
-
+  console.log(data);
   if (isData) {
-    const dataAddress = data.data.address;
-
+    const dataAddress = data.data.current.resolvedAddress.toLowerCase();
+    console.log(`dataAddress: ${dataAddress}  input: ${input}`);
     if (dataAddress === input) {
       isSameCity = true;
     }
@@ -187,6 +241,9 @@ async function updateUI(input) {
     }
   }
 
+  console.log(
+    `isData: ${isData}   isSameCity: ${isSameCity}  isDataStale: ${isDataStale}`,
+  );
   if (isData === false || isSameCity === false || isDataStale === true) {
     console.log("-----> A) NEW fetch request");
     data = await fetchData(input);
@@ -194,15 +251,21 @@ async function updateUI(input) {
   }
   updateCurrentUI(data.data);
   updateForecast(data.data.forecasts);
+  applyTemperatureUnit();
 }
 
 function init() {
   console.log("====== start program ======");
   setAppTheme(mediaQueryList.matches);
+  initializeTemperaturUnit();
   const initialCall = "New York, US".toLowerCase();
-  updateUI(initialCall);
 
+  updateUI(initialCall);
   setInterval(getTime, 1000);
 }
 
 init();
+
+// - check for fetch doesn't work anymore because resolvedAddress can be different from input "isSameCity"
+// - if fetch not successfull, add logic in catch
+// - btn theme needs to toggle its icon
