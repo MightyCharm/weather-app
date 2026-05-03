@@ -8,7 +8,7 @@ import {
   getUnitStorage,
   setUnitStorage,
 } from "./storage.js";
-import { getCustomObject, customData } from "./dataProcessor.js";
+import { getCustomObject } from "./dataProcessor.js";
 
 const APP_VERSION = "1.2.1";
 if (localStorage.getItem("app-version") !== APP_VERSION) {
@@ -75,16 +75,22 @@ function toggleTemperatureUnit() {
 }
 
 function applyTemperatureUnit() {
-  console.log("applyTemperatureUnit()");
-  console.log(customData);
+  const customData = getDataStorage();
   const unit = getUnitStorage();
+  console.log(customData);
+  if (!customData) {
+    console.log(
+      "something went wrong inside applyTemperature Unit, no customData available",
+    );
+    return;
+  }
   if (unit === "celsius") {
     btnTempUnit.textContent = "°C";
-    uiTemp.textContent = customData.current.temperature;
+    uiTemp.textContent = customData.data.current.temperature;
     uiTempUnit.textContent = "°C";
-    uiFeelTemp.textContent = `${customData.current.feelslike} °C`;
+    uiFeelTemp.textContent = `${customData.data.current.feelslike} °C`;
 
-    customData.forecasts.forEach((obj, index) => {
+    customData.data.forecasts.forEach((obj, index) => {
       const card = cardsForecast[index];
       const uiForecastTemps = card.querySelector(".data-forecast-temp");
       uiForecastTemps.textContent = `${obj.minTemp}° - ${obj.maxTemp}°`;
@@ -92,12 +98,16 @@ function applyTemperatureUnit() {
   } else {
     btnTempUnit.textContent = "°F";
 
-    const currTempF = Math.round((customData.current.temperature * 9) / 5 + 32);
-    const feelTempF = Math.round((customData.current.feelslike * 9) / 5 + 32);
+    const currTempF = Math.round(
+      (customData.data.current.temperature * 9) / 5 + 32,
+    );
+    const feelTempF = Math.round(
+      (customData.data.current.feelslike * 9) / 5 + 32,
+    );
     uiTemp.textContent = currTempF;
     uiTempUnit.textContent = "°F";
     uiFeelTemp.textContent = `${feelTempF} °F`;
-    customData.forecasts.forEach((obj, index) => {
+    customData.data.forecasts.forEach((obj, index) => {
       const minF = Math.round((obj.minTemp * 9) / 5 + 32);
       const maxF = Math.round((obj.maxTemp * 9) / 5 + 32);
 
