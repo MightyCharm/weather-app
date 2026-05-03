@@ -1,5 +1,3 @@
-let customData = undefined; // saves custom data so applyTemperatureUnit can use it
-
 function getCustomObject(data) {
   //console.log("getCustomObject(data)");
   //console.log(data);
@@ -44,7 +42,6 @@ function getCustomObject(data) {
     forecasts: modifiedForecasts,
   };
   //console.log(`temperature: ${customObj.current.temperature} feelslike: ${customObj.current.feelslike}`);
-  customData = customObj;
   return customObj;
 }
 
@@ -62,4 +59,4 @@ function capitalizeCityName(address) {
   return modifiedAddress;
 }
 
-export { getCustomObject, customData };
+export { getCustomObject };
