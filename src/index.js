@@ -75,8 +75,8 @@ function toggleTemperatureUnit() {
 }
 
 function applyTemperatureUnit() {
-  //console.log("applyTemperatureUnit()");
-  //console.log(customData);
+  console.log("applyTemperatureUnit()");
+  console.log(customData);
   const unit = getUnitStorage();
   if (unit === "celsius") {
     btnTempUnit.textContent = "°C";
@@ -223,7 +223,7 @@ async function updateUI(input) {
   isData = data ? true : false;
   console.log(data);
   if (isData) {
-    const dataAddress = data.data.current.resolvedAddress.toLowerCase();
+    const dataAddress = data.data.current.address.toLowerCase();
     console.log(`dataAddress: ${dataAddress}  input: ${input}`);
     if (dataAddress === input) {
       isSameCity = true;
