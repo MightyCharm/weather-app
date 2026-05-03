@@ -15,6 +15,7 @@ It also displays a 6 day forecast.
 - current time
 - responsive layout
 - switch between light & dark theme, if nothing is selected browser theme is applied
+- switch between Celsius & Fahrenheit
 
 ## ⚙️ Tech Stack
 
