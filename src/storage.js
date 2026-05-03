@@ -1,9 +1,10 @@
-function setThemeStorage(theme) {
-  localStorage.setItem("theme", JSON.stringify(theme));
+function getThemeStorage() {
+  const theme = JSON.parse(localStorage.getItem("theme"));
+  return theme ? theme : false;
 }
 
-function getThemeStorage() {
-  return JSON.parse(localStorage.getItem("theme"));
+function setThemeStorage(theme) {
+  localStorage.setItem("theme", JSON.stringify(theme));
 }
 
 function getDataStorage() {
@@ -14,14 +15,14 @@ function getDataStorage() {
 function setDataStorage(data) {
   localStorage.setItem("data", JSON.stringify(data));
 }
-// ------------------------------------------------------------------
+
+function getUnitStorage() {
+  const unit = JSON.parse(localStorage.getItem("unit"));
+  return unit ? unit : false;
+}
 
 function setUnitStorage(unit) {
   localStorage.setItem("unit", JSON.stringify(unit));
-}
-
-function getUnitStorage() {
-  return JSON.parse(localStorage.getItem("unit"));
 }
 
 export {

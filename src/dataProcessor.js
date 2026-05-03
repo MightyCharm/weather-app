@@ -1,6 +1,7 @@
 let customData = undefined; // saves custom data so applyTemperatureUnit can use it
 
 function getCustomObject(data) {
+  //console.log("getCustomObject(data)");
   //console.log(data);
   const dataDate = data.days[0].datetime;
   const objDate = new Date(dataDate);
@@ -8,7 +9,6 @@ function getCustomObject(data) {
   const weekday = objDate.toLocaleDateString("de-DE", { weekday: "long" });
 
   const rawForecasts = data.days.slice(1, 7);
-  //console.log(rawForecasts);
   const modifiedForecasts = rawForecasts.map((obj) => {
     const date = new Date(obj.datetime);
     const day = date.toLocaleDateString("de-DE", { weekday: "long" });

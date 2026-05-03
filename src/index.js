@@ -75,7 +75,7 @@ function toggleTemperatureUnit() {
 }
 
 function applyTemperatureUnit() {
-  console.log("applyTemperatureUnit()");
+  //console.log("applyTemperatureUnit()");
   //console.log(customData);
   const unit = getUnitStorage();
   if (unit === "celsius") {
@@ -245,7 +245,7 @@ async function updateUI(input) {
     `isData: ${isData}   isSameCity: ${isSameCity}  isDataStale: ${isDataStale}`,
   );
   if (isData === false || isSameCity === false || isDataStale === true) {
-    console.log("-----> A) NEW fetch request");
+    console.log("---------> NEW fetch request");
     data = await fetchData(input);
     setDataStorage(data);
   }
