@@ -9,13 +9,7 @@ import {
   setUnitStorage,
 } from "./storage.js";
 import { getCustomObject } from "./dataProcessor.js";
-
-const APP_VERSION = "1.0";
-if (localStorage.getItem("app-version") !== APP_VERSION) {
-  console.log("App version out of date");
-  localStorage.clear();
-  localStorage.setItem("app-version", APP_VERSION);
-}
+console.log("====== start program ======");
 
 const body = document.querySelector("body");
 // unit & color theme buttons
@@ -279,7 +273,6 @@ async function updateUI(input) {
 }
 
 function init() {
-  console.log("====== start program ======");
   setAppTheme(mediaQueryList.matches);
   initializeTemperaturUnit();
   const initialCall = "New York, US".toLowerCase();
@@ -290,7 +283,5 @@ function init() {
 
 init();
 
-// improve check at start for localstorage (data)
-// - check for fetch doesn't work anymore because resolvedAddress can be different from input "isSameCity"
 // - if fetch not successfull, add logic in catch
 // - alt attribute for images
