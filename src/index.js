@@ -10,8 +10,9 @@ import {
 } from "./storage.js";
 import { getCustomObject } from "./dataProcessor.js";
 
-const APP_VERSION = "1.2.1";
+const APP_VERSION = "1.0";
 if (localStorage.getItem("app-version") !== APP_VERSION) {
+  console.log("App version out of date");
   localStorage.clear();
   localStorage.setItem("app-version", APP_VERSION);
 }
@@ -20,6 +21,7 @@ const body = document.querySelector("body");
 // unit & color theme buttons
 const btnTempUnit = document.getElementById("btn-temp");
 const btnColorTheme = document.getElementById("btn-color");
+const iconTheme = document.querySelector(".icon-theme");
 // form input elements
 const inputForm = document.getElementById("search");
 const searchButton = document.getElementById("search-btn");
@@ -50,7 +52,7 @@ btnTempUnit.addEventListener("click", () => {
 });
 
 btnColorTheme.addEventListener("click", () => {
-  console.log(body.getAttribute("data-theme"));
+  //console.log(body.getAttribute("data-theme"));
   if (body.getAttribute("data-theme")) {
     setThemeStorage("dark");
   } else {
@@ -77,7 +79,7 @@ function toggleTemperatureUnit() {
 function applyTemperatureUnit() {
   const customData = getDataStorage();
   const unit = getUnitStorage();
-  console.log(customData);
+  //console.log(customData);
   if (!customData) {
     console.log(
       "something went wrong inside applyTemperature Unit, no customData available",
@@ -126,19 +128,37 @@ function initializeTemperaturUnit() {
 }
 
 function setAppTheme(arg) {
+  // arg represents browser theme on init or refresh,
+  // if true=browser has dark theme, if false=light theme
+  // if undefined, call comes from btnColorTheme
+
+  console.log("function setApptheme()");
+  iconTheme.classList.remove("fa-moon");
+  iconTheme.classList.remove("fa-sun");
   const theme = getThemeStorage();
-  // if no app theme was saved, apply browser theme
+  // if no app themewas saved, apply browser theme
+  //console.log(`arg: ${arg} theme: ${theme}`);
   if (!theme) {
     if (arg) {
+      // dark theme
+      console.log("1");
       body.removeAttribute("data-theme");
+      iconTheme.classList.add("fa-moon");
     } else {
+      // light theme
+      console.log("2");
       body.setAttribute("data-theme", "light");
+      iconTheme.classList.add("fa-sun");
     }
   } else {
-    if (theme === "light") {
-      body.setAttribute("data-theme", "light");
-    } else {
+    if (theme === "dark") {
+      console.log("3");
       body.removeAttribute("data-theme");
+      iconTheme.classList.add("fa-moon");
+    } else {
+      console.log("4");
+      body.setAttribute("data-theme", "light");
+      iconTheme.classList.add("fa-sun");
     }
   }
 }
@@ -231,10 +251,10 @@ async function updateUI(input) {
   let isSameCity = false;
   let isDataStale = false;
   isData = data ? true : false;
-  console.log(data);
+  //console.log(data);
   if (isData) {
     const dataAddress = data.data.current.address.toLowerCase();
-    console.log(`dataAddress: ${dataAddress}  input: ${input}`);
+    //console.log(`dataAddress: ${dataAddress}  input: ${input}`);
     if (dataAddress === input) {
       isSameCity = true;
     }
@@ -251,9 +271,7 @@ async function updateUI(input) {
     }
   }
 
-  console.log(
-    `isData: ${isData}   isSameCity: ${isSameCity}  isDataStale: ${isDataStale}`,
-  );
+  //console.log(`${isData} ${isSameCity} ${isDataStale}`);
   if (isData === false || isSameCity === false || isDataStale === true) {
     console.log("---------> NEW fetch request");
     data = await fetchData(input);

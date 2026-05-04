@@ -109,12 +109,30 @@ body {
 
 .btn-temp-unit,
 .btn-color-theme {
+  min-width: 40px;
+  border-radius: 2px;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.btn-temp-unit {
+  font-weight: bold;
   font-size: 1.5rem;
-  padding: 0.1rem 1rem 0rem 1rem;
-  text-align: center;
   border: none;
-  min-width: 60px;
+}
+
+.btn-color-theme {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
   background-color: var(--btn-bg);
+  /* border: 1px solid red; */
+}
+
+.icon-theme {
+  /* border: 1px solid green; */
 }
 
 .page-main {
@@ -154,6 +172,9 @@ body {
   padding: 0 0.5rem;
   border: none;
   background-color: var(--btn-bg);
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
 }
 
 .section-current {
@@ -357,6 +378,7 @@ body {
   .btn-temp-unit:hover,
   .btn-color-theme:hover {
     cursor: pointer;
+    color: white;
     background-color: deeppink;
   }
 
