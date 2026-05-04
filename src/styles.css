@@ -109,12 +109,37 @@ body {
 
 .btn-temp-unit,
 .btn-color-theme {
+  min-width: 40px;
+  border-radius: 2px;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.btn-temp-unit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
   font-size: 1.5rem;
-  padding: 0.1rem 1rem 0rem 1rem;
-  text-align: center;
   border: none;
-  min-width: 60px;
+}
+
+.span-temp-unit {
+  margin-left: -4px;
+}
+
+.btn-color-theme {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
   background-color: var(--btn-bg);
+  /* border: 1px solid red; */
+}
+
+.icon-theme {
+  /* border: 1px solid green; */
 }
 
 .page-main {
@@ -154,8 +179,12 @@ body {
   padding: 0 0.5rem;
   border: none;
   background-color: var(--btn-bg);
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
 }
 
+/* current ============================================================= */
 .section-current {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -264,7 +293,7 @@ body {
   text-align: center;
 }
 
-/* =================================== */
+/* forecast ============================================================= */
 .section-forecast {
   display: flex;
   justify-content: center;
@@ -313,7 +342,7 @@ body {
   background-color: var(--section-extra-information-bg);
 }
 
-/* footer =========================================== */
+/* footer ============================================================= */
 .page-footer {
   display: flex;
   flex-direction: column;
@@ -357,6 +386,7 @@ body {
   .btn-temp-unit:hover,
   .btn-color-theme:hover {
     cursor: pointer;
+    color: white;
     background-color: deeppink;
   }
 
