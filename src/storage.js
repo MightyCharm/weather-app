@@ -8,8 +8,18 @@ function setThemeStorage(theme) {
 }
 
 function getDataStorage() {
-  const checkData = JSON.parse(localStorage.getItem("data"));
-  return checkData ? checkData : false;
+  try {
+    const checkData = JSON.parse(localStorage.getItem("data"));
+    if (!checkData.data.current || !checkData.data.forecasts) {
+      console.log("should be here 1.)");
+      localStorage.removeItem("data");
+      return false;
+    }
+    return checkData;
+  } catch {
+    localStorage.removeItem("data");
+    return false;
+  }
 }
 
 function setDataStorage(data) {
