@@ -117,9 +117,16 @@ body {
 }
 
 .btn-temp-unit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
   font-size: 1.5rem;
   border: none;
+}
+
+.span-temp-unit {
+  margin-left: -4px;
 }
 
 .btn-color-theme {
@@ -177,6 +184,7 @@ body {
     background-color 0.3s ease;
 }
 
+/* current ============================================================= */
 .section-current {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -285,7 +293,7 @@ body {
   text-align: center;
 }
 
-/* =================================== */
+/* forecast ============================================================= */
 .section-forecast {
   display: flex;
   justify-content: center;
@@ -334,7 +342,7 @@ body {
   background-color: var(--section-extra-information-bg);
 }
 
-/* footer =========================================== */
+/* footer ============================================================= */
 .page-footer {
   display: flex;
   flex-direction: column;

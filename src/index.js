@@ -20,6 +20,7 @@ if (localStorage.getItem("app-version") !== APP_VERSION) {
 const body = document.querySelector("body");
 // unit & color theme buttons
 const btnTempUnit = document.getElementById("btn-temp");
+const spanTempUnit = document.getElementById("span-temp");
 const btnColorTheme = document.getElementById("btn-color");
 const iconTheme = document.querySelector(".icon-theme");
 // form input elements
@@ -79,7 +80,6 @@ function toggleTemperatureUnit() {
 function applyTemperatureUnit() {
   const customData = getDataStorage();
   const unit = getUnitStorage();
-  //console.log(customData);
   if (!customData) {
     console.log(
       "something went wrong inside applyTemperature Unit, no customData available",
@@ -87,7 +87,7 @@ function applyTemperatureUnit() {
     return;
   }
   if (unit === "celsius") {
-    btnTempUnit.textContent = "°C";
+    spanTempUnit.textContent = "°C";
     uiTemp.textContent = customData.data.current.temperature;
     uiTempUnit.textContent = "°C";
     uiFeelTemp.textContent = `${customData.data.current.feelslike} °C`;
@@ -98,7 +98,7 @@ function applyTemperatureUnit() {
       uiForecastTemps.textContent = `${obj.minTemp}° - ${obj.maxTemp}°`;
     });
   } else {
-    btnTempUnit.textContent = "°F";
+    spanTempUnit.textContent = "°F";
 
     const currTempF = Math.round(
       (customData.data.current.temperature * 9) / 5 + 32,
@@ -141,22 +141,18 @@ function setAppTheme(arg) {
   if (!theme) {
     if (arg) {
       // dark theme
-      console.log("1");
       body.removeAttribute("data-theme");
       iconTheme.classList.add("fa-moon");
     } else {
       // light theme
-      console.log("2");
       body.setAttribute("data-theme", "light");
       iconTheme.classList.add("fa-sun");
     }
   } else {
     if (theme === "dark") {
-      console.log("3");
       body.removeAttribute("data-theme");
       iconTheme.classList.add("fa-moon");
     } else {
-      console.log("4");
       body.setAttribute("data-theme", "light");
       iconTheme.classList.add("fa-sun");
     }
@@ -294,6 +290,7 @@ function init() {
 
 init();
 
+// improve check at start for localstorage (data)
 // - check for fetch doesn't work anymore because resolvedAddress can be different from input "isSameCity"
 // - if fetch not successfull, add logic in catch
-// - btn theme needs to toggle its icon
+// - alt attribute for images
