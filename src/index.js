@@ -285,3 +285,4 @@ init();
 
 // - if fetch not successfull, add logic in catch
 // - alt attribute for images
+// - implement geo-location to fetch user location at start
