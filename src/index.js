@@ -35,6 +35,13 @@ const uiDescription = document.getElementById("data-description");
 const uiFetchTime = document.getElementById("data-fetched-time");
 // forecast
 const cardsForecast = document.querySelectorAll(".card-forecast");
+// loading screen
+const sectionCurrent = document.getElementById("current-ui");
+const sectionForecast = document.getElementById("forecast-ui");
+const sectionExtraInformation = document.getElementById("extra-information-ui");
+const uiLoading = document.getElementById("loading-ui");
+const uiParaLoading = document.getElementById("text-loading");
+
 // get object for checking if dark theme is selected
 const mediaQueryList = window.matchMedia("(prefers-color-scheme:dark");
 mediaQueryList.addEventListener("change", () => {
@@ -125,8 +132,6 @@ function setAppTheme(arg) {
   // arg represents browser theme on init or refresh,
   // if true=browser has dark theme, if false=light theme
   // if undefined, call comes from btnColorTheme
-
-  console.log("function setApptheme()");
   iconTheme.classList.remove("fa-moon");
   iconTheme.classList.remove("fa-sun");
   const theme = getThemeStorage();
@@ -168,6 +173,36 @@ function getTime() {
   uiCurrentTime.textContent = `${hours}:${minutes}:${seconds}`;
 }
 
+function displayLoadingScreen(show) {
+  console.log("displayLoadingScreen()");
+  if (show) {
+    //console.log("A)");
+    sectionCurrent.classList.add("hidden");
+    sectionForecast.classList.add("hidden");
+    sectionExtraInformation.classList.add("hidden");
+    uiLoading.classList.remove("hidden");
+  } else {
+    //console.log("B)");
+    setTimeout(() => {
+      sectionCurrent.classList.remove("hidden");
+      sectionForecast.classList.remove("hidden");
+      sectionExtraInformation.classList.remove("hidden");
+      uiLoading.classList.add("hidden");
+    }, 2000);
+  }
+}
+
+function updateMessageLoadingScreen(type) {
+  console.log("updateMessageLoadingScreen()", type);
+  if (type === "loading" || type === "fetch") {
+    uiParaLoading.textContent = "Loading...";
+  } else if (type === "no-data") {
+    setTimeout(() => {
+      uiParaLoading.textContent = "No Data available. Please try again...";
+    }, 2000);
+  }
+}
+
 async function fetchData(input) {
   const city = input;
   try {
@@ -183,7 +218,8 @@ async function fetchData(input) {
     const modifiedData = { data: getCustomObject(data), timestamp: Date.now() };
     return modifiedData;
   } catch (error) {
-    console.log(error);
+    //console.log(error);
+    return false;
   }
 }
 
@@ -261,18 +297,34 @@ async function updateUI(input) {
     }
   }
 
-  //console.log(`${isData} ${isSameCity} ${isDataStale}`);
+  console.log(`${isData} ${isSameCity} ${isDataStale}`);
+  // new fetch if: no data || another city || data to old
   if (isData === false || isSameCity === false || isDataStale === true) {
-    console.log("---------> NEW fetch request");
+    console.log("NEW fetch request ---------------------------");
     data = await fetchData(input);
-    setDataStorage(data);
+
+    displayLoadingScreen(true);
+    updateMessageLoadingScreen("fetch");
   }
-  updateCurrentUI(data.data);
-  updateForecast(data.data.forecasts);
-  applyTemperatureUnit();
+  // check if we have data or not
+  if (data) {
+    console.log("if data", data);
+    setDataStorage(data);
+    updateCurrentUI(data.data);
+    updateForecast(data.data.forecasts);
+    applyTemperatureUnit();
+
+    displayLoadingScreen(false);
+    //updateMessageLoadingScreen("step: we have data");
+  } else {
+    console.log("else: no data", data);
+    updateMessageLoadingScreen("no-data");
+  }
 }
 
 function init() {
+  updateMessageLoadingScreen("loading");
+
   setAppTheme(mediaQueryList.matches);
   initializeTemperaturUnit();
   const initialCall = "New York, US".toLowerCase();
@@ -283,6 +335,6 @@ function init() {
 
 init();
 
-// - if fetch not successfull, add logic in catch
 // - alt attribute for images
 // - implement geo-location to fetch user location at start
+// - add check for input, if no input, it shouldn't be fetch

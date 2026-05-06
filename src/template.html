@@ -40,7 +40,7 @@
         </section>
 
         <section class="section-weather-data">
-          <section class="section-current hidden">
+          <section id="current-ui" class="section-current hidden">
             <div class="div-current-location-date">
               <p id="address" class="resolved-address"></p>
               <p id="date-time" class="current-date-time">
@@ -91,7 +91,7 @@
               <p id="data-description"></p>
             </div>
           </section>
-          <section class="section-forecast hidden">
+          <section id="forecast-ui" class="section-forecast hidden">
             <ul class="ul-forecast">
               <li class="card-forecast">
                 <p class="data-forecast-weekday"></p>
@@ -131,11 +131,16 @@
               </li>
             </ul>
           </section>
-          <section class="section-extra-information hidden">
+          <div
+            id="extra-information-ui"
+            class="section-extra-information hidden"
+          >
             <p id="data-fetched-time" class="time-data-fetched"></p>
-          </section>
+          </div>
 
-          <div class="loading-screen hidden"><p></p></div>
+          <div id="loading-ui" class="loading-screen">
+            <p id="text-loading" class="para-loading-screen"></p>
+          </div>
         </section>
       </main>
       <footer class="page-footer" aria-label="Social media links">
