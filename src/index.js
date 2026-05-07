@@ -18,8 +18,8 @@ const spanTempUnit = document.getElementById("span-temp");
 const btnColorTheme = document.getElementById("btn-color");
 const iconTheme = document.querySelector(".icon-theme");
 // form input elements
+const form = document.getElementById("fetch-form");
 const inputForm = document.getElementById("search");
-const searchButton = document.getElementById("search-btn");
 // current weather
 const uiResolvedAddress = document.getElementById("address");
 const uiCurrentTime = document.getElementById("current-time");
@@ -54,7 +54,6 @@ btnTempUnit.addEventListener("click", () => {
 });
 
 btnColorTheme.addEventListener("click", () => {
-  //console.log(body.getAttribute("data-theme"));
   if (body.getAttribute("data-theme")) {
     setThemeStorage("dark");
   } else {
@@ -63,10 +62,20 @@ btnColorTheme.addEventListener("click", () => {
   setAppTheme();
 });
 
-searchButton.addEventListener("click", (event) => {
+form.addEventListener("submit", (event) => {
   event.preventDefault();
   const input = getUserInput();
   updateUI(input);
+});
+
+inputForm.addEventListener("invalid", () => {
+  if (inputForm.validity.valueMissing) {
+    inputForm.setCustomValidity("Bitte einen Ort eingeben.");
+  }
+});
+
+inputForm.addEventListener("input", () => {
+  inputForm.setCustomValidity("");
 });
 
 function toggleTemperatureUnit() {
@@ -174,15 +183,12 @@ function getTime() {
 }
 
 function displayLoadingScreen(show) {
-  console.log("displayLoadingScreen()");
   if (show) {
-    //console.log("A)");
     sectionCurrent.classList.add("hidden");
     sectionForecast.classList.add("hidden");
     sectionExtraInformation.classList.add("hidden");
     uiLoading.classList.remove("hidden");
   } else {
-    //console.log("B)");
     setTimeout(() => {
       sectionCurrent.classList.remove("hidden");
       sectionForecast.classList.remove("hidden");
@@ -193,7 +199,6 @@ function displayLoadingScreen(show) {
 }
 
 function updateMessageLoadingScreen(type) {
-  console.log("updateMessageLoadingScreen()", type);
   if (type === "loading" || type === "fetch") {
     uiParaLoading.textContent = "Loading...";
   } else if (type === "no-data") {
@@ -308,7 +313,6 @@ async function updateUI(input) {
   }
   // check if we have data or not
   if (data) {
-    console.log("if data", data);
     setDataStorage(data);
     updateCurrentUI(data.data);
     updateForecast(data.data.forecasts);
@@ -317,7 +321,6 @@ async function updateUI(input) {
     displayLoadingScreen(false);
     //updateMessageLoadingScreen("step: we have data");
   } else {
-    console.log("else: no data", data);
     updateMessageLoadingScreen("no-data");
   }
 }
