@@ -18,8 +18,8 @@ const spanTempUnit = document.getElementById("span-temp");
 const btnColorTheme = document.getElementById("btn-color");
 const iconTheme = document.querySelector(".icon-theme");
 // form input elements
-const inputForm = document.getElementById("search");
 const form = document.getElementById("fetch-form");
+const inputForm = document.getElementById("search");
 // current weather
 const uiResolvedAddress = document.getElementById("address");
 const uiCurrentTime = document.getElementById("current-time");
@@ -63,10 +63,19 @@ btnColorTheme.addEventListener("click", () => {
 });
 
 form.addEventListener("submit", (event) => {
-  console.log("eventlistener form");
   event.preventDefault();
   const input = getUserInput();
   updateUI(input);
+});
+
+inputForm.addEventListener("invalid", () => {
+  if (inputForm.validity.valueMissing) {
+    inputForm.setCustomValidity("Bitte einen Ort eingeben.");
+  }
+});
+
+inputForm.addEventListener("input", () => {
+  inputForm.setCustomValidity("");
 });
 
 function toggleTemperatureUnit() {
