@@ -19,7 +19,8 @@ const btnColorTheme = document.getElementById("btn-color");
 const iconTheme = document.querySelector(".icon-theme");
 // form input elements
 const form = document.getElementById("fetch-form");
-const inputForm = document.getElementById("search");
+const inputForm = document.getElementById("input-search");
+const btnSearch = document.getElementById("btn-search");
 // current weather
 const uiResolvedAddress = document.getElementById("address");
 const uiCurrentTime = document.getElementById("current-time");
@@ -188,12 +189,14 @@ function displayLoadingScreen(show) {
     sectionForecast.classList.add("hidden");
     sectionExtraInformation.classList.add("hidden");
     uiLoading.classList.remove("hidden");
+    btnSearch.disabled = true;
   } else {
     setTimeout(() => {
       sectionCurrent.classList.remove("hidden");
       sectionForecast.classList.remove("hidden");
       sectionExtraInformation.classList.remove("hidden");
       uiLoading.classList.add("hidden");
+      btnSearch.disabled = false;
     }, 2000);
   }
 }
@@ -223,7 +226,7 @@ async function fetchData(input) {
     const modifiedData = { data: getCustomObject(data), timestamp: Date.now() };
     return modifiedData;
   } catch (error) {
-    //console.log(error);
+    console.log(error);
     return false;
   }
 }
@@ -305,7 +308,7 @@ async function updateUI(input) {
   console.log(`${isData} ${isSameCity} ${isDataStale}`);
   // new fetch if: no data || another city || data to old
   if (isData === false || isSameCity === false || isDataStale === true) {
-    console.log("NEW fetch request ---------------------------");
+    console.log("-> NEW fetch request <---------------------------");
     data = await fetchData(input);
 
     displayLoadingScreen(true);
