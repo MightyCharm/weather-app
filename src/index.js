@@ -226,7 +226,7 @@ async function fetchData(input) {
     const modifiedData = { data: getCustomObject(data), timestamp: Date.now() };
     return modifiedData;
   } catch (error) {
-    //console.log(error);
+    console.log(error);
     return false;
   }
 }
@@ -308,7 +308,7 @@ async function updateUI(input) {
   console.log(`${isData} ${isSameCity} ${isDataStale}`);
   // new fetch if: no data || another city || data to old
   if (isData === false || isSameCity === false || isDataStale === true) {
-    console.log("NEW fetch request ---------------------------");
+    console.log("-> NEW fetch request <---------------------------");
     data = await fetchData(input);
 
     displayLoadingScreen(true);
