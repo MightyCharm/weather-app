@@ -250,10 +250,12 @@ async function updateCurrentUI(data) {
   //const uvindex = data.current.uvindex;
   const description = data.current.description;
   const fetchTime = data.current.fetchedTime;
+  const altText = conditions;
 
   uiResolvedAddress.textContent = `${resolvedAddress}`;
   uiDataDate.textContent = `${weekday}, ${date} | `;
   uiIcon.src = require(`./images/SVG/icons2/${icon}.svg`);
+  uiIcon.alt = altText;
   uiConditions.textContent = conditions;
   uiTemp.textContent = `${temperature}`;
   uiFeelTemp.textContent = `${feelslike} °C`;
@@ -271,9 +273,11 @@ async function updateForecast(data) {
     const uiIcon = card.querySelector(".data-forecast-icon");
     const uiTemp = card.querySelector(".data-forecast-temp");
     const uiConditions = card.querySelector(".data-forecast-conditions");
+    const altText = obj.conditions;
 
     uiWeekday.textContent = obj.weekday;
     uiIcon.src = require(`./images/SVG/icons2/${obj.icon}.svg`);
+    uiIcon.alt = altText;
     uiTemp.textContent = `${obj.minTemp}° - ${obj.maxTemp}°`;
     uiConditions.textContent = obj.conditions;
   });
@@ -344,3 +348,9 @@ init();
 // - alt attribute for images
 // - implement geo-location to fetch user location at start
 // - add check for input, if no input, it shouldn't be fetch
+
+// feat: geolocation
+// on page laod -> navigator.geolocation.getCurrentPosition()
+// success -> show
+// fail -> check localStoage for weather data- display
+//      -> no data in localStorage do standard fetch
