@@ -250,10 +250,12 @@ async function updateCurrentUI(data) {
   //const uvindex = data.current.uvindex;
   const description = data.current.description;
   const fetchTime = data.current.fetchedTime;
+  const altText = conditions;
 
   uiResolvedAddress.textContent = `${resolvedAddress}`;
   uiDataDate.textContent = `${weekday}, ${date} | `;
   uiIcon.src = require(`./images/SVG/icons2/${icon}.svg`);
+  uiIcon.alt = altText;
   uiConditions.textContent = conditions;
   uiTemp.textContent = `${temperature}`;
   uiFeelTemp.textContent = `${feelslike} °C`;
@@ -271,9 +273,11 @@ async function updateForecast(data) {
     const uiIcon = card.querySelector(".data-forecast-icon");
     const uiTemp = card.querySelector(".data-forecast-temp");
     const uiConditions = card.querySelector(".data-forecast-conditions");
+    const altText = obj.conditions;
 
     uiWeekday.textContent = obj.weekday;
     uiIcon.src = require(`./images/SVG/icons2/${obj.icon}.svg`);
+    uiIcon.alt = altText;
     uiTemp.textContent = `${obj.minTemp}° - ${obj.maxTemp}°`;
     uiConditions.textContent = obj.conditions;
   });
@@ -322,25 +326,43 @@ async function updateUI(input) {
     applyTemperatureUnit();
 
     displayLoadingScreen(false);
-    //updateMessageLoadingScreen("step: we have data");
   } else {
     updateMessageLoadingScreen("no-data");
   }
 }
 
-function init() {
+function getPosition() {
+  return new Promise((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject),
+  );
+}
+
+async function getGeolocation() {
+  try {
+    const position = await getPosition();
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    console.log(latitude, longitude);
+    const response = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
+    );
+    const data = await response.json();
+    //console.log(data);
+    return `${data.city}, ${data.countryName}`;
+  } catch (error) {
+    console.log(error);
+    return "New York, US";
+  }
+}
+
+async function init() {
   updateMessageLoadingScreen("loading");
 
   setAppTheme(mediaQueryList.matches);
   initializeTemperaturUnit();
-  const initialCall = "New York, US".toLowerCase();
-
+  const initialCall = await getGeolocation();
   updateUI(initialCall);
   setInterval(getTime, 1000);
 }
 
 init();
-
-// - alt attribute for images
-// - implement geo-location to fetch user location at start
-// - add check for input, if no input, it shouldn't be fetch
