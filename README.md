@@ -34,21 +34,21 @@ https://mightycharm.github.io/weather-app/
 
 ## 📸 Screenshots
 
-<figure style="margin-bottom: 30px;">
+<figure>
   <img src="src/images/img_dark.png" width="800" height="auto" alt="dark theme ui" />
-  <figcaption style="text-align: center; font-weight: bold">Dark Theme</figcaption>
+  <figcaption>Dark Theme</figcaption>
 </figure>
-<figure style="margin-bottom: 30px;">
+<figure>
   <img src="src/images/img_light.png" width="800" height="auto" alt="light theme ui" />
-  <figcaption style="text-align: center; font-weight: bold">Light Theme</figcaption>
+  <figcaption>Light Theme</figcaption>
 </figure>
-<figure style="margin-bottom: 30px;">
+<figure>
   <img src="src/images/img_fahrenheit.png" width="800" height="auto" alt="ui displays fahrenheit" />
-  <figcaption style="text-align: center; font-weight: bold">Temperature in Fahrenheit</figcaption>
+  <figcaption>Temperature in Fahrenheit</figcaption>
 </figure>
-<figure style="margin-bottom: 30px; font-weight: bold">
-  <img src="src/images/img_load.png" width="800" height="auto" alt="ui displays laoding screen" />
-  <figcaption style="text-align: center;">Loading Screen</figcaption>
+<figure>
+  <img src="src/images/img_load.png" width="800" height="auto" alt="ui displays loading screen" />
+  <figcaption>Loading Screen</figcaption>
 </figure>
 
 ## 🔧 Setup
