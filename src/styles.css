@@ -105,10 +105,11 @@ body {
 }
 
 .header-btns {
-  display: flex;
   align-self: start;
   justify-self: end;
+  display: flex;
   gap: 0.4rem;
+  margin-right: 4rem;
 }
 
 .btn-temp-unit,
