@@ -9,13 +9,14 @@ It also displays a 6 day forecast.
 
 ## ✅ Features
 
-- takes a city name as user input
-- current weather
-- 6-day weather forecast
-- current time
-- responsive layout
-- switch between light & dark theme, if nothing is selected browser theme is applied
+- takes a location as user input
+- displays current weather and 6-day weather forecast
+- displays current time
+- switch between light & dark theme, if nothing was selected browser theme is applied
 - switch between Celsius & Fahrenheit
+- saves user selection for temperature and theme
+- on user search a loading screen is shown
+- responsive layout for different screen sizes
 
 ## ⚙️ Tech Stack
 
