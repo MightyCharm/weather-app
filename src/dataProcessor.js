@@ -1,7 +1,4 @@
 function getCustomObject(data) {
-  //console.log("getCustomObject(data)");
-  //console.log(data);
-  // create date object from data array days to create date in germany format and weekday as string
   const dataDate = data.days[0].datetime;
   const objDate = new Date(dataDate);
   const date = objDate.toLocaleDateString("de-DE");

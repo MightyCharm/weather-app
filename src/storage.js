@@ -11,7 +11,6 @@ function getDataStorage() {
   try {
     const checkData = JSON.parse(localStorage.getItem("data"));
     if (!checkData.data.current || !checkData.data.forecasts) {
-      console.log("should be here 1.)");
       localStorage.removeItem("data");
       return false;
     }

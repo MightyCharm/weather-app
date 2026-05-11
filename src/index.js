@@ -9,7 +9,6 @@ import {
   setUnitStorage,
 } from "./storage.js";
 import { getCustomObject } from "./dataProcessor.js";
-console.log("====== start program ======");
 
 const body = document.querySelector("body");
 // unit & color theme buttons
@@ -145,8 +144,7 @@ function setAppTheme(arg) {
   iconTheme.classList.remove("fa-moon");
   iconTheme.classList.remove("fa-sun");
   const theme = getThemeStorage();
-  // if no app themewas saved, apply browser theme
-  //console.log(`arg: ${arg} theme: ${theme}`);
+  // if no app theme was saved, apply browser theme
   if (!theme) {
     if (arg) {
       // dark theme
@@ -170,7 +168,6 @@ function setAppTheme(arg) {
 
 function getUserInput() {
   const input = inputForm.value.toLowerCase().trim();
-  inputForm.value = "";
   return input;
 }
 
@@ -232,7 +229,6 @@ async function fetchData(input) {
 }
 
 async function updateCurrentUI(data) {
-  //console.log(data);
   const resolvedAddress = data.current.resolvedAddress;
   const weekday = data.current.weekday;
   const date = data.current.date;
@@ -289,7 +285,6 @@ async function updateUI(input) {
   let isSameCity = false;
   let isDataStale = false;
   isData = data ? true : false;
-  //console.log(data);
   if (isData) {
     const dataAddress = data.data.current.address.toLowerCase();
     //console.log(`dataAddress: ${dataAddress}  input: ${input}`);
@@ -347,7 +342,6 @@ async function getGeolocation() {
       `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
     );
     const data = await response.json();
-    //console.log(data);
     return `${data.city}, ${data.countryName}`;
   } catch (error) {
     console.log(error);
